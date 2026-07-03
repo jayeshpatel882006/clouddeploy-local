@@ -7,6 +7,7 @@ import {
   deleteDeployment,
 } from "../controllers/deployment.controller.js";
 import validate from "../middleware/validate.js";
+import { deploymentLimiter } from "../middleware/rateLimiter.js";
 
 const router = Router();
 
@@ -94,10 +95,10 @@ const updateDeploymentRules = {
   },
 };
 
-router.post("/", validate(createDeploymentRules), createDeployment);
+router.post("/", deploymentLimiter, validate(createDeploymentRules), createDeployment);
 router.get("/", getDeployments);
 router.get("/:id", getDeploymentById);
-router.put("/:id", validate(updateDeploymentRules), updateDeployment);
+router.put("/:id", deploymentLimiter, validate(updateDeploymentRules), updateDeployment);
 router.delete("/:id", deleteDeployment);
 
 export default router;
