@@ -55,6 +55,7 @@ app.use("/api", apiLimiter);
 /* ─── API Documentation ─────────────────────── */
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get("/api/docs.json", (req, res) => res.json(swaggerSpec));
+app.get("/api-docs.json", (req, res) => res.json(swaggerSpec));
 
 /* ─── Routes ────────────────────────────────── */
 app.get("/health", (req, res) => {
