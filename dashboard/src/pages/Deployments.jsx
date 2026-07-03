@@ -1,5 +1,14 @@
+import DeploymentHeader from "@/components/deployments/DeploymentHeader";
+import DeploymentTable from "@/components/deployments/DeploymentTable";
+
 const Deployments = () => {
-  return <h1 className="text-3xl font-bold">Deployments</h1>;
+  return (
+    <div className="space-y-8">
+      <DeploymentHeader />
+
+      <DeploymentTable />
+    </div>
+  );
 };
 
 export default Deployments;
