@@ -1,5 +1,6 @@
 import { Circle } from "lucide-react";
 import { navigation } from "@/config/navigation";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -19,16 +20,20 @@ const Sidebar = () => {
 
             return (
               <li key={item.id}>
-                <button
-                  className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 transition-all ${
-                    item.path === "/"
-                      ? "bg-blue-600 text-white"
-                      : "text-slate-400 hover:bg-slate-800 hover:text-white"
-                  }`}
+                <NavLink
+                  key={item.id}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `flex w-full items-center gap-3 rounded-lg px-4 py-3 transition-all ${
+                      isActive
+                        ? "bg-blue-600 text-white"
+                        : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                    }`
+                  }
                 >
                   <Icon size={20} />
                   {item.title}
-                </button>
+                </NavLink>
               </li>
             );
           })}
