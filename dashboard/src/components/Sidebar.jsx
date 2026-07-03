@@ -1,5 +1,5 @@
 import { Circle } from "lucide-react";
-import { navigation } from "../config/navigation";
+import { navigation } from "@/config/navigation";
 
 const Sidebar = () => {
   return (
