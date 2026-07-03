@@ -1,45 +1,5 @@
-import {
-  LayoutDashboard,
-  Rocket,
-  Boxes,
-  Activity,
-  FileText,
-  Database,
-  Settings,
-  Circle,
-} from "lucide-react";
-
-const menuItems = [
-  {
-    name: "Dashboard",
-    icon: LayoutDashboard,
-    active: true,
-  },
-  {
-    name: "Deployments",
-    icon: Rocket,
-  },
-  {
-    name: "Clusters",
-    icon: Boxes,
-  },
-  {
-    name: "Monitoring",
-    icon: Activity,
-  },
-  {
-    name: "Logs",
-    icon: FileText,
-  },
-  {
-    name: "Registry",
-    icon: Database,
-  },
-  {
-    name: "Settings",
-    icon: Settings,
-  },
-];
+import { Circle } from "lucide-react";
+import { navigation } from "../config/navigation";
 
 const Sidebar = () => {
   return (
@@ -54,20 +14,20 @@ const Sidebar = () => {
       {/* Navigation */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
-          {menuItems.map((item) => {
+          {navigation.map((item) => {
             const Icon = item.icon;
 
             return (
-              <li key={item.name}>
+              <li key={item.id}>
                 <button
                   className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 transition-all ${
-                    item.active
+                    item.path === "/"
                       ? "bg-blue-600 text-white"
                       : "text-slate-400 hover:bg-slate-800 hover:text-white"
                   }`}
                 >
                   <Icon size={20} />
-                  {item.name}
+                  {item.title}
                 </button>
               </li>
             );
