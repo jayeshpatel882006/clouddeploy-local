@@ -1,57 +1,58 @@
-import StatsCard from "@/components/dashboard/StatsCard";
-import DeploymentTable from "@/components/dashboard/DeploymentTable";
-import ClusterStatus from "@/components/dashboard/ClusterStatus";
+import { motion } from "framer-motion";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import StatsCards from "@/components/dashboard/StatsCards";
+import ClusterHealth from "@/components/dashboard/ClusterHealth";
+import QuickActions from "@/components/dashboard/QuickActions";
+import ResourceUsage from "@/components/dashboard/ResourceUsage";
+import RecentDeployments from "@/components/dashboard/RecentDeployments";
+import RecentActivity from "@/components/dashboard/RecentActivity";
 
-const stats = [
-  {
-    title: "Applications",
-    value: 8,
-    subtitle: "Running applications",
-    color: "blue",
-  },
-  {
-    title: "Pods",
-    value: 24,
-    subtitle: "Running pods",
-    color: "green",
-  },
-  {
-    title: "Cluster",
-    value: "Healthy",
-    subtitle: "Kubernetes status",
-    color: "green",
-  },
-  {
-    title: "CPU Usage",
-    value: "32%",
-    subtitle: "Current utilization",
-    color: "yellow",
-  },
-];
+const sectionVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.4, ease: "easeOut" },
+  }),
+};
 
 const Dashboard = () => {
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      className="space-y-6"
+    >
+      <motion.div custom={0} variants={sectionVariants}>
+        <DashboardHeader />
+      </motion.div>
 
-        <p className="mt-2 text-slate-400">Welcome to CloudDeploy Local</p>
+      <motion.div custom={1} variants={sectionVariants}>
+        <StatsCards />
+      </motion.div>
+
+      <motion.div custom={2} variants={sectionVariants}>
+        <ResourceUsage />
+      </motion.div>
+
+      <div className="grid gap-6 xl:grid-cols-3">
+        <motion.div custom={3} variants={sectionVariants} className="xl:col-span-2">
+          <RecentDeployments />
+        </motion.div>
+        <motion.div custom={4} variants={sectionVariants}>
+          <ClusterHealth />
+        </motion.div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-        {stats.map((stat) => (
-          <StatsCard key={stat.title} {...stat} />
-        ))}
+      <div className="grid gap-6 xl:grid-cols-3">
+        <motion.div custom={5} variants={sectionVariants}>
+          <QuickActions />
+        </motion.div>
+        <motion.div custom={6} variants={sectionVariants} className="xl:col-span-2">
+          <RecentActivity />
+        </motion.div>
       </div>
-
-      <div className="grid gap-5 xl:grid-cols-3">
-        <div className="xl:col-span-2">
-          <DeploymentTable />
-        </div>
-
-        <ClusterStatus />
-      </div>
-    </div>
+    </motion.div>
   );
 };
 
