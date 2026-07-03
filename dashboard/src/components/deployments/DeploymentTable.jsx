@@ -176,6 +176,7 @@ const DeploymentTable = ({ search, filters, onView, onScale, onDelete }) => {
         totalItems={sorted.length}
         pageSize={PAGE_SIZE}
         onChange={setCurrentPage}
+        itemLabel="deployments"
       />
     </div>
   );

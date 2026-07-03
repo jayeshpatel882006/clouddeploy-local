@@ -2,15 +2,41 @@ import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
-const Modal = ({
+const sideConfig = {
+  right: {
+    initial: { x: "100%" },
+    animate: { x: 0 },
+    overlay: "left-0",
+    panel: "right-0 border-l",
+  },
+  left: {
+    initial: { x: "-100%" },
+    animate: { x: 0 },
+    overlay: "right-0",
+    panel: "left-0 border-r",
+  },
+};
+
+const widthMap = {
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+  "2xl": "max-w-2xl",
+  full: "max-w-full",
+};
+
+const Drawer = ({
   isOpen,
   onClose,
   title,
   children,
-  width = "max-w-lg",
+  side = "right",
+  width = "xl",
   showClose = true,
   closeOnOverlay = true,
 }) => {
+  const config = sideConfig[side] || sideConfig.right;
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -29,25 +55,25 @@ const Modal = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50">
           {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeOnOverlay ? onClose : undefined}
           />
 
-          {/* Content */}
+          {/* Panel */}
           <motion.div
             ref={contentRef}
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
-            className={`relative w-full ${width} max-h-[85vh] overflow-y-auto rounded-xl border border-slate-700 bg-slate-900 shadow-2xl`}
+            initial={config.initial}
+            animate={config.animate}
+            exit={config.initial}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className={`absolute inset-y-0 ${config.panel} flex w-full ${widthMap[width] || widthMap.xl} flex-col border-slate-800 bg-slate-950 shadow-2xl`}
             role="dialog"
             aria-modal="true"
             aria-label={title}
@@ -63,7 +89,7 @@ const Modal = ({
                 <button
                   onClick={onClose}
                   className="ml-3 rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-                  aria-label="Close modal"
+                  aria-label="Close drawer"
                 >
                   <X size={18} />
                 </button>
@@ -71,7 +97,7 @@ const Modal = ({
             </div>
 
             {/* Body */}
-            <div className="p-6">{children}</div>
+            <div className="flex-1 overflow-y-auto">{children}</div>
           </motion.div>
         </div>
       )}
@@ -79,4 +105,4 @@ const Modal = ({
   );
 };
 
-export default Modal;
+export default Drawer;
