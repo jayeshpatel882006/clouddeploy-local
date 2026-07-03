@@ -21,4 +21,22 @@ const createDeploymentService = async (deploymentData) => {
   };
 };
 
-export { createDeploymentService };
+const getDeploymentsService = async (query = {}) => {
+  const filter = {};
+
+  if (query.status) {
+    filter.status = query.status;
+  }
+
+  if (query.namespace) {
+    filter.namespace = query.namespace;
+  }
+
+  const deployments = await DeploymentHistory.find(filter)
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return deployments;
+};
+
+export { createDeploymentService, getDeploymentsService };

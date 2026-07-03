@@ -1,20 +1,20 @@
-import { createDeploymentService } from "../services/deployment.service.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import {
+  createDeploymentService,
+  getDeploymentsService,
+} from "../services/deployment.service.js";
 
-const createDeployment = async (req, res) => {
-  try {
-    const result = await createDeploymentService(req.body);
+const createDeployment = asyncHandler(async (req, res) => {
+  const result = await createDeploymentService(req.body);
 
-    return res.status(201).json({
-      success: true,
-      message: "Deployment created successfully.",
-      data: result,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+  return new ApiResponse(201, result, "Deployment created successfully").send(res);
+});
 
-export { createDeployment };
+const getDeployments = asyncHandler(async (req, res) => {
+  const result = await getDeploymentsService(req.query);
+
+  return new ApiResponse(200, result, "Deployments retrieved").send(res);
+});
+
+export { createDeployment, getDeployments };

@@ -1,19 +1,11 @@
+import asyncHandler from "../utils/asyncHandler.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import { getDashboardOverview } from "../services/dashboard.service.js";
 
-const getDashboard = async (req, res) => {
-  try {
-    const data = await getDashboardOverview();
+const getDashboard = asyncHandler(async (req, res) => {
+  const data = await getDashboardOverview();
 
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+  return new ApiResponse(200, data, "Dashboard overview retrieved").send(res);
+});
 
 export { getDashboard };
