@@ -97,3 +97,5 @@ grafana-data/
 # Loki Data
 # ==========================
 loki-data/
+
+prompts.txt
