@@ -43,16 +43,35 @@
 // export { deploymentService };
 
 import { cloneRepository } from "../git/git.service.js";
+import { detectNodeProject } from "../node/node.service.js";
+import fs from "fs/promises";
 
 export const deploymentService = async (deployment) => {
   const clonedRepository = await cloneRepository(
     deployment.repositoryUrl,
     deployment.branch,
   );
+  try {
+    const project = detectNodeProject(clonedRepository.path);
+
+    return {
+      success: true,
+      project,
+    };
+  } catch (error) {
+    // delete cloned folder
+    await fs.rm(clonedRepository.path, {
+      recursive: true,
+      force: true,
+    });
+
+    throw error;
+  }
 
   return {
     success: true,
-    status: "Repository Cloned",
+    status: "Node Project Detected",
     repository: clonedRepository,
+    project: projectInfo,
   };
 };
