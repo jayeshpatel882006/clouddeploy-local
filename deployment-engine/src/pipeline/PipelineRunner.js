@@ -16,7 +16,6 @@
 
 import { PipelineContext } from "./PipelineContext.js";
 import { BaseStep } from "./core/BaseStep.js";
-import { PipelineEvents } from "./events/PipelineEvents.js";
 
 class PipelineRunner {
   constructor() {
@@ -70,7 +69,6 @@ class PipelineRunner {
 
     /* ─── Mark pipeline as started ──────────── */
     context.markStarted();
-    this._emit(PipelineEvents.PIPELINE_STARTED, context);
 
     /* ─── Execute each step sequentially ────── */
     for (let i = 0; i < this.steps.length; i++) {
@@ -88,7 +86,6 @@ class PipelineRunner {
       /* Step started */
       const stepStart = Date.now();
       context.log(`\n▶ ${step.stepName}`);
-      this._emit(PipelineEvents.STEP_STARTED, { context, step });
 
       try {
         /* Execute the step */
@@ -99,7 +96,6 @@ class PipelineRunner {
         context.recordStep(step.stepName, "completed", duration);
         context.setProgress((i + 1) * this.stepWeight);
         context.log(`✔ ${step.stepName} completed (${duration}ms)`);
-        this._emit(PipelineEvents.STEP_COMPLETED, { context, step, duration });
       } catch (error) {
         /* Record failure */
         const duration = Date.now() - stepStart;
@@ -107,12 +103,6 @@ class PipelineRunner {
         context.addError(step.stepName, error.message);
         context.markFailed(`Failed at step: ${step.stepName}`);
         context.log(`✗ ${step.stepName} FAILED — ${error.message}`);
-        this._emit(PipelineEvents.STEP_FAILED, {
-          context,
-          step,
-          duration,
-          error: error.message,
-        });
 
         /* Stop pipeline on failure */
         break;
@@ -122,31 +112,10 @@ class PipelineRunner {
     /* ─── Finalise ──────────────────────────── */
     if (context.status === "Running") {
       context.markCompleted();
-      this._emit(PipelineEvents.PIPELINE_COMPLETED, context);
-    } else if (context.status === "Failed") {
-      this._emit(PipelineEvents.PIPELINE_FAILED, context);
     }
 
     context.currentStep = null;
     return context;
-  }
-
-  /* ─── Internal Helpers ─────────────────────── */
-
-  /**
-   * Emit a pipeline event.
-   * Currently a stub — a future EventEmitter integration
-   * will route these to WebSockets, logs, or monitoring.
-   *
-   * @param {string} eventName
-   * @param {*} payload
-   * @private
-   */
-  _emit(eventName, payload) {
-    // Future: real event bus integration
-    if (process.env.NODE_ENV === "development") {
-      // console.debug(`[PipelineEvent] ${eventName}`);
-    }
   }
 }
 
