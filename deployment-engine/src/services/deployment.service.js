@@ -46,6 +46,7 @@ import { cloneRepository } from "../git/git.service.js";
 import { detectNodeProject } from "../node/node.service.js";
 import fs from "fs/promises";
 import { installDependencies } from "../node/npm.service.js";
+import { buildDockerImage } from "../docker/docker.build.js";
 import {
   detectDockerfile,
   generateDockerfile,
@@ -58,7 +59,7 @@ export const deploymentService = async (deployment) => {
   );
   try {
     const project = detectNodeProject(clonedRepository.path);
-    const npmResult = await installDependencies(clonedRepository.path);
+    // const npmResult = await installDependencies(clonedRepository.path);
     let dockerInfo = detectDockerfile(clonedRepository.path);
 
     if (!dockerInfo.exists) {
@@ -71,13 +72,21 @@ export const deploymentService = async (deployment) => {
       };
     }
 
+    const imageName = project.projectName.toLowerCase();
+
+    const dockerBuild = await buildDockerImage(
+      clonedRepository.path,
+      imageName,
+    );
+
     return {
       success: true,
       project,
       status: "Project Ready",
       repository: clonedRepository,
-      install: npmResult,
+      // install: npmResult,
       docker: dockerInfo,
+      image: dockerBuild,
     };
   } catch (error) {
     // delete cloned folder
@@ -94,6 +103,6 @@ export const deploymentService = async (deployment) => {
     status: "Dependencies Installed",
     repository: clonedRepository,
     project: project,
-    install: npmResult,
+    // install: npmResult,
   };
 };
