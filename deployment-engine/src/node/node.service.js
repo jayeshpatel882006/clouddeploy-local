@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { validatePackageJson } from "./node.validator.js";
 
 export const detectNodeProject = (repositoryPath) => {
   const packageJsonPath = path.join(repositoryPath, "package.json");
@@ -9,6 +10,7 @@ export const detectNodeProject = (repositoryPath) => {
   }
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+  validatePackageJson(packageJson);
 
   return {
     projectName: packageJson.name,
