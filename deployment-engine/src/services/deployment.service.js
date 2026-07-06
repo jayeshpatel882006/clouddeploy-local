@@ -42,12 +42,9 @@
 
 // export { deploymentService };
 import fs from "fs/promises";
-
 import { cloneRepository } from "../git/git.service.js";
-
 import { detectNodeProject } from "../node/node.service.js";
 import { installDependencies } from "../node/npm.service.js";
-
 import {
   detectDockerfile,
   generateDockerfile,
@@ -55,12 +52,10 @@ import {
 import { buildDockerImage } from "../docker/docker.build.js";
 import { runDockerContainer } from "../docker/docker.run.js";
 import { pushDockerImage } from "../docker/docker.push.js";
-
 import { checkHealth } from "../health/health.service.js";
-
 import { generateDeploymentManifest } from "../kubernetes/manifest.service.js";
-
 import { generateImageTag } from "../utils/imageTag.js";
+import { createDeploymentMetadata } from "../deployment/deploymentMetadata.service.js";
 
 export const deploymentService = async (deployment) => {
   // ==========================================================
@@ -148,12 +143,18 @@ export const deploymentService = async (deployment) => {
       replicas: 1,
     });
 
+    const deploymentMetadata = createDeploymentMetadata({
+      appName: imageName,
+      image: pushedImage.image,
+      repository: deployment.repositoryUrl,
+    });
+
     // ==========================================================
     // SUCCESS RESPONSE
     // ==========================================================
     return {
       success: true,
-      status: "Project Ready",
+      status: "READY_FOR_DEPLOYMENT",
 
       project,
       repository: clonedRepository,
@@ -168,6 +169,7 @@ export const deploymentService = async (deployment) => {
 
       registry: pushedImage,
       deploymentManifest,
+      deployment: deploymentMetadata,
     };
   } catch (error) {
     // ==========================================================
