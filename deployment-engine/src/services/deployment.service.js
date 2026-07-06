@@ -48,6 +48,7 @@ import fs from "fs/promises";
 import { installDependencies } from "../node/npm.service.js";
 import { buildDockerImage } from "../docker/docker.build.js";
 import { runDockerContainer } from "../docker/docker.run.js";
+import { checkHealth } from "../health/health.service.js";
 import {
   detectDockerfile,
   generateDockerfile,
@@ -79,8 +80,11 @@ export const deploymentService = async (deployment) => {
       clonedRepository.path,
       imageName,
     );
-    const container = await runDockerContainer(imageName, "latest", 3000);
 
+    //Running it now make no sense bcz we know that our app can run
+    // const container = await runDockerContainer(imageName, "latest", 3000);
+
+    // const health = await checkHealth(3000); Paused for now because we are not have /helth endpoint in the project, we can add it later if needed
     return {
       success: true,
       project,
@@ -90,6 +94,7 @@ export const deploymentService = async (deployment) => {
       docker: dockerInfo,
       image: dockerBuild,
       container,
+      // health, Paused for now because we are not have /helth endpoint in the project, we can add it later if needed
     };
   } catch (error) {
     // delete cloned folder
