@@ -56,6 +56,8 @@ import { checkHealth } from "../health/health.service.js";
 import { generateDeploymentManifest } from "../kubernetes/manifest.service.js";
 import { generateImageTag } from "../utils/imageTag.js";
 import { createDeploymentMetadata } from "../deployment/deploymentMetadata.service.js";
+import { generateServiceManifest } from "../kubernetes/serviceManifest.service.js";
+import { deployManifest } from "../kubernetes/kubernetes.deploy.js";
 
 export const deploymentService = async (deployment) => {
   // ==========================================================
@@ -142,12 +144,18 @@ export const deploymentService = async (deployment) => {
       containerPort: 3000,
       replicas: 1,
     });
-
+    const kubernetesDeployment = await deployManifest(deploymentManifest);
     const deploymentMetadata = createDeploymentMetadata({
       appName: imageName,
       image: pushedImage.image,
       repository: deployment.repositoryUrl,
     });
+    const serviceManifest = generateServiceManifest({
+      appName: imageName,
+      containerPort: 3000,
+      servicePort: 80,
+    });
+    const kubernetesService = await deployManifest(serviceManifest);
 
     // ==========================================================
     // SUCCESS RESPONSE
@@ -170,6 +178,9 @@ export const deploymentService = async (deployment) => {
       registry: pushedImage,
       deploymentManifest,
       deployment: deploymentMetadata,
+      serviceManifest,
+      service: kubernetesService,
+      deployment: kubernetesDeployment,
     };
   } catch (error) {
     // ==========================================================
