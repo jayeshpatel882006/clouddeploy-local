@@ -49,6 +49,7 @@ import { installDependencies } from "../node/npm.service.js";
 import { buildDockerImage } from "../docker/docker.build.js";
 import { runDockerContainer } from "../docker/docker.run.js";
 import { checkHealth } from "../health/health.service.js";
+import { pushDockerImage } from "../docker/docker.push.js";
 import {
   detectDockerfile,
   generateDockerfile,
@@ -85,6 +86,7 @@ export const deploymentService = async (deployment) => {
     // const container = await runDockerContainer(imageName, "latest", 3000);
 
     // const health = await checkHealth(3000); Paused for now because we are not have /helth endpoint in the project, we can add it later if needed
+    const pushedImage = await pushDockerImage(imageName, "latest");
     return {
       success: true,
       project,
@@ -93,8 +95,9 @@ export const deploymentService = async (deployment) => {
       // install: npmResult,
       docker: dockerInfo,
       image: dockerBuild,
-      container,
+      // container,
       // health, Paused for now because we are not have /helth endpoint in the project, we can add it later if needed
+      registry: pushedImage,
     };
   } catch (error) {
     // delete cloned folder
