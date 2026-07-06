@@ -22,6 +22,8 @@ export const buildDockerImage = async (
       stderr,
     };
   } catch (error) {
-    throw new Error(`Docker build failed.\n${error.message}`);
+    throw new Error(
+      `Docker build failed.(might be the docker is not running)\n${error.message}`,
+    );
   }
 };

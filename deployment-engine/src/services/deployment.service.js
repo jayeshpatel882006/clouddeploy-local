@@ -47,6 +47,7 @@ import { detectNodeProject } from "../node/node.service.js";
 import fs from "fs/promises";
 import { installDependencies } from "../node/npm.service.js";
 import { buildDockerImage } from "../docker/docker.build.js";
+import { runDockerContainer } from "../docker/docker.run.js";
 import {
   detectDockerfile,
   generateDockerfile,
@@ -78,6 +79,7 @@ export const deploymentService = async (deployment) => {
       clonedRepository.path,
       imageName,
     );
+    const container = await runDockerContainer(imageName, "latest", 3000);
 
     return {
       success: true,
@@ -87,6 +89,7 @@ export const deploymentService = async (deployment) => {
       // install: npmResult,
       docker: dockerInfo,
       image: dockerBuild,
+      container,
     };
   } catch (error) {
     // delete cloned folder
