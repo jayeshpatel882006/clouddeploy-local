@@ -100,3 +100,5 @@ loki-data/
 
 # Workspace
 workspace/
+
+**/manifests/
