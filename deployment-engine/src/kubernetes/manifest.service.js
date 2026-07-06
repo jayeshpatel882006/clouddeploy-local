@@ -21,7 +21,7 @@ spec:
       labels:
         app: ${appName}
     spec:
-    containers:
+     containers:
         - name: ${appName}
           image: ${image}
           imagePullPolicy: Always
