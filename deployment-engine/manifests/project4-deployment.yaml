@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project4
+  template:
+    metadata:
+      labels:
+        app: project4
+    spec:
+    containers:
+        - name: project4
+          image: localhost:5000/project4:20260706-153136
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
