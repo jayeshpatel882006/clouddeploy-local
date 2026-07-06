@@ -50,6 +50,7 @@ import { buildDockerImage } from "../docker/docker.build.js";
 import { runDockerContainer } from "../docker/docker.run.js";
 import { checkHealth } from "../health/health.service.js";
 import { pushDockerImage } from "../docker/docker.push.js";
+import { generateImageTag } from "../utils/imageTag.js";
 import {
   detectDockerfile,
   generateDockerfile,
@@ -76,17 +77,19 @@ export const deploymentService = async (deployment) => {
     }
 
     const imageName = project.projectName.toLowerCase();
+    const imageTag = generateImageTag();
 
     const dockerBuild = await buildDockerImage(
       clonedRepository.path,
       imageName,
+      imageTag,
     );
 
     //Running it now make no sense bcz we know that our app can run
-    // const container = await runDockerContainer(imageName, "latest", 3000);
+    // const container = await runDockerContainer(imageName, imageTag, 3000);
 
     // const health = await checkHealth(3000); Paused for now because we are not have /helth endpoint in the project, we can add it later if needed
-    const pushedImage = await pushDockerImage(imageName, "latest");
+    const pushedImage = await pushDockerImage(imageName, imageTag);
     return {
       success: true,
       project,
