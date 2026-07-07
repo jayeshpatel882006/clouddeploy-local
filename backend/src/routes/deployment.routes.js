@@ -106,6 +106,7 @@ import {
   createDeployment,
   getDeployments,
   getDeploymentById,
+  deleteDeployment,
 } from "../controllers/deployment.controller.js";
 
 const router = Router();
@@ -113,6 +114,7 @@ const router = Router();
 router.get("/", getDeployments);
 router.get("/:id", getDeploymentById);
 router.post("/", createDeployment);
+router.delete("/:id", deleteDeployment);
 
 // ==========================================
 // FUTURE PHASE

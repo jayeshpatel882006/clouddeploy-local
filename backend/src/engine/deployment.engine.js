@@ -16,3 +16,15 @@ export const triggerDeployment = async (deployment) => {
     );
   }
 };
+
+export const deleteDeploymentEngine = async (deployment) => {
+  const { data } = await axios.delete(`${ENGINE_URL}/delete`, {
+    data: {
+      deploymentName: deployment.deploymentName,
+      serviceName: deployment.serviceName,
+      namespace: deployment.namespace || "default",
+    },
+  });
+
+  return data;
+};

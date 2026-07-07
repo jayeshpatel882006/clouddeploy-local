@@ -118,7 +118,10 @@
 // };
 import Deployment from "../models/Deployment.js";
 import DeploymentHistory from "../models/DeploymentHistory.js";
-import { triggerDeployment } from "../engine/deployment.engine.js";
+import {
+  triggerDeployment,
+  deleteDeploymentEngine,
+} from "../engine/deployment.engine.js";
 import ApiError from "../utils/ApiError.js";
 
 export const registerRepository = async (repositoryUrl, branch = "main") => {
@@ -210,4 +213,26 @@ export const getDeploymentByIdService = async (id) => {
     throw ApiError.notFound(`Deployment not found with id: ${id}`);
   }
   return deployment;
+};
+
+export const deleteDeploymentService = async (id) => {
+  const deployment = await Deployment.findById(id);
+
+  if (!deployment) {
+    throw new Error("Deployment not found");
+  }
+
+  await deleteDeploymentEngine(deployment);
+
+  await DeploymentHistory.create({
+    ...deployment.toObject(),
+    status: "DELETED",
+  });
+
+  await Deployment.findByIdAndDelete(id);
+
+  return {
+    success: true,
+    message: "Deployment deleted successfully",
+  };
 };

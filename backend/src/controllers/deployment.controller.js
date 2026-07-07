@@ -52,6 +52,7 @@ import {
   registerRepository,
   getDeploymentsService,
   getDeploymentByIdService,
+  deleteDeploymentService,
 } from "../services/deployment.service.js";
 
 // ==========================================
@@ -106,6 +107,16 @@ export const getDeploymentById = async (req, res, next) => {
       message: "Deployment retrieved",
       data: deployment,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteDeployment = async (req, res, next) => {
+  try {
+    const result = await deleteDeploymentService(req.params.id);
+
+    res.json(result);
   } catch (error) {
     next(error);
   }
