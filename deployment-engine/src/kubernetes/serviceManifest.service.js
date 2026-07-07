@@ -13,11 +13,11 @@ metadata:
 spec:
   selector:
     app: ${appName}
+  type: NodePort
   ports:
     - protocol: TCP
       port: ${servicePort}
       targetPort: ${containerPort}
-  type: ClusterIP
 `;
 
   const manifestDir = path.join(process.cwd(), "manifests");
@@ -30,5 +30,7 @@ spec:
 
   fs.writeFileSync(filePath, manifest);
 
-  return filePath;
+  return {
+    path: filePath,
+  };
 };

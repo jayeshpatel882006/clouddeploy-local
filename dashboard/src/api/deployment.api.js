@@ -16,6 +16,7 @@ export const getDeployment = async (id) => {
 
 export const createDeployment = async (payload) => {
   const { data } = await apiClient.post("/deployments", payload);
+  console.log("createDeployment data:", data);
   return data;
 };
 

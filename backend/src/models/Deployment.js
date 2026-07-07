@@ -7,10 +7,47 @@ const deploymentSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     branch: {
       type: String,
       default: "main",
     },
+
+    projectName: {
+      type: String,
+      default: null,
+    },
+
+    image: {
+      type: String,
+      default: null,
+    },
+
+    deploymentName: {
+      type: String,
+      default: null,
+    },
+
+    serviceName: {
+      type: String,
+      default: null,
+    },
+
+    namespace: {
+      type: String,
+      default: "default",
+    },
+
+    previewUrl: {
+      type: String,
+      default: null,
+    },
+
+    error: {
+      type: String,
+      default: null,
+    },
+
     status: {
       type: String,
       enum: [

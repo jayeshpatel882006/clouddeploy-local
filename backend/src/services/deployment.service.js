@@ -163,8 +163,8 @@ export const processDeployment = async (deployment) => {
     // ==========================================
     deployment.projectName = result.project.projectName;
     deployment.image = result.registry.image;
-    deployment.deploymentName = result.project.projectName;
-    deployment.serviceName = result.project.projectName;
+    deployment.deploymentName = result.deploymentMetadata.appName;
+    deployment.serviceName = result.deploymentMetadata.appName;
     deployment.previewUrl = result.previewUrl;
     deployment.status = "RUNNING";
 
@@ -199,9 +199,7 @@ export const saveDeploymentHistory = async (deployment) => {
 // ==========================================
 
 export const getDeploymentsService = async () => {
-  const deployments = await Deployment.find({})
-    .sort({ createdAt: -1 })
-    .lean();
+  const deployments = await Deployment.find({}).sort({ createdAt: -1 }).lean();
 
   return deployments;
 };
