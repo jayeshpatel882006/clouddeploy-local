@@ -59,6 +59,7 @@ import { createDeploymentMetadata } from "../deployment/deploymentMetadata.servi
 import { generateServiceManifest } from "../kubernetes/serviceManifest.service.js";
 import { deployManifest } from "../kubernetes/kubernetes.deploy.js";
 import { waitForDeployment } from "../kubernetes/kubernetes.wait.js";
+import { cleanupDeployment } from "../cleanup/cleanup.service.js";
 
 export const deploymentService = async (deployment) => {
   // ==========================================================
@@ -160,6 +161,13 @@ export const deploymentService = async (deployment) => {
 
     const deploymentStatus = await waitForDeployment(imageName);
 
+    const cleanup = await cleanupDeployment({
+      workspacePath: clonedRepository.path,
+
+      // Uncomment when validation container is enabled again
+      // containerName: container.containerName,
+    });
+
     // ==========================================================
     // SUCCESS RESPONSE
     // ==========================================================
@@ -185,6 +193,7 @@ export const deploymentService = async (deployment) => {
       serviceManifest,
       service: kubernetesService,
       deployment: kubernetesDeployment,
+      cleanup,
     };
   } catch (error) {
     // ==========================================================
