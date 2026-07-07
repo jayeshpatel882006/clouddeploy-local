@@ -1,8 +1,13 @@
-import { Router } from "express";
-import { getDashboard } from "../controllers/dashboard.controller.js";
+// ==========================================
+// FUTURE PHASE
+// Dashboard Module
+// ==========================================
 
-const router = Router();
+// import { Router } from "express";
+// import { getDashboard } from "../controllers/dashboard.controller.js";
 
-router.get("/", getDashboard);
+// const router = Router();
 
-export default router;
+// router.get("/", getDashboard);
+
+// export default router;

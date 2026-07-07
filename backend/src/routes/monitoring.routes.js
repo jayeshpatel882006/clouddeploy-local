@@ -1,13 +1,18 @@
-import { Router } from "express";
-import {
-  getMetricsHandler,
-  getSummary,
-} from "../controllers/monitoring.controller.js";
-import { authenticate } from "../middleware/auth.js";
+// ==========================================
+// FUTURE PHASE
+// Monitoring Module
+// ==========================================
 
-const router = Router();
+// import { Router } from "express";
+// import {
+//   getMetricsHandler,
+//   getSummary,
+// } from "../controllers/monitoring.controller.js";
+// import { authenticate } from "../middleware/auth.js";
 
-router.get("/", authenticate, getMetricsHandler);
-router.get("/summary", authenticate, getSummary);
+// const router = Router();
 
-export default router;
+// router.get("/", authenticate, getMetricsHandler);
+// router.get("/summary", authenticate, getSummary);
+
+// export default router;

@@ -1,38 +1,43 @@
-import mongoose from "mongoose";
+// ==========================================
+// FUTURE PHASE
+// RegistryImage Model
+// ==========================================
 
-const registryImageSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    tag: {
-      type: String,
-      default: "latest",
-    },
-    digest: {
-      type: String,
-      default: "",
-    },
-    size: {
-      type: String,
-      default: "",
-    },
-    registry: {
-      type: String,
-      default: "localhost:5000",
-    },
-    pulledAt: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  {
-    timestamps: true,
-  },
-);
+// import mongoose from "mongoose";
 
-registryImageSchema.index({ name: 1, tag: 1 }, { unique: true });
+// const registryImageSchema = new mongoose.Schema(
+//   {
+//     name: {
+//       type: String,
+//       required: true,
+//       trim: true,
+//     },
+//     tag: {
+//       type: String,
+//       default: "latest",
+//     },
+//     digest: {
+//       type: String,
+//       default: "",
+//     },
+//     size: {
+//       type: String,
+//       default: "",
+//     },
+//     registry: {
+//       type: String,
+//       default: "localhost:5000",
+//     },
+//     pulledAt: {
+//       type: Date,
+//       default: Date.now,
+//     },
+//   },
+//   {
+//     timestamps: true,
+//   },
+// );
 
-export default mongoose.model("RegistryImage", registryImageSchema);
+// registryImageSchema.index({ name: 1, tag: 1 }, { unique: true });
+
+// export default mongoose.model("RegistryImage", registryImageSchema);

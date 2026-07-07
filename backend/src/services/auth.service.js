@@ -1,68 +1,73 @@
-import User from "../models/User.js";
-import ApiError from "../utils/ApiError.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
+// ==========================================
+// FUTURE PHASE
+// Auth Service
+// ==========================================
 
-const JWT_SECRET = process.env.JWT_SECRET || "clouddeploy-dev-secret";
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
+// import User from "../models/User.js";
+// import ApiError from "../utils/ApiError.js";
+// import jwt from "jsonwebtoken";
+// import bcrypt from "bcryptjs";
 
-const generateToken = (user) => {
-  return jwt.sign(
-    { id: user._id, email: user.email, role: user.role },
-    JWT_SECRET,
-    { expiresIn: JWT_EXPIRES_IN },
-  );
-};
+// const JWT_SECRET = process.env.JWT_SECRET || "clouddeploy-dev-secret";
+// const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 
-const registerUser = async ({ email, password, name }) => {
-  const existing = await User.findOne({ email });
-  if (existing) throw ApiError.conflict("User with this email already exists");
+// const generateToken = (user) => {
+//   return jwt.sign(
+//     { id: user._id, email: user.email, role: user.role },
+//     JWT_SECRET,
+//     { expiresIn: JWT_EXPIRES_IN },
+//   );
+// };
 
-  const hashedPassword = await bcrypt.hash(password, 12);
+// const registerUser = async ({ email, password, name }) => {
+//   const existing = await User.findOne({ email });
+//   if (existing) throw ApiError.conflict("User with this email already exists");
 
-  const user = await User.create({
-    email,
-    password: hashedPassword,
-    name,
-    role: "user",
-  });
+//   const hashedPassword = await bcrypt.hash(password, 12);
 
-  const { id, email: userEmail, name: userName, role } = user;
-  const token = generateToken({ _id: id, email: userEmail, role });
+//   const user = await User.create({
+//     email,
+//     password: hashedPassword,
+//     name,
+//     role: "user",
+//   });
 
-  return {
-    token,
-    user: { id, email: userEmail, name: userName, role },
-  };
-};
+//   const { id, email: userEmail, name: userName, role } = user;
+//   const token = generateToken({ _id: id, email: userEmail, role });
 
-const loginUser = async ({ email, password }) => {
-  const user = await User.findOne({ email }).select("+password");
-  if (!user) throw ApiError.unauthorized("Invalid email or password");
+//   return {
+//     token,
+//     user: { id, email: userEmail, name: userName, role },
+//   };
+// };
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw ApiError.unauthorized("Invalid email or password");
+// const loginUser = async ({ email, password }) => {
+//   const user = await User.findOne({ email }).select("+password");
+//   if (!user) throw ApiError.unauthorized("Invalid email or password");
 
-  const token = generateToken(user);
+//   const isMatch = await bcrypt.compare(password, user.password);
+//   if (!isMatch) throw ApiError.unauthorized("Invalid email or password");
 
-  return {
-    token,
-    user: { id: user._id, email: user.email, name: user.name, role: user.role },
-  };
-};
+//   const token = generateToken(user);
 
-const refreshToken = async (userId) => {
-  const user = await User.findById(userId);
-  if (!user) throw ApiError.notFound("User not found");
+//   return {
+//     token,
+//     user: { id: user._id, email: user.email, name: user.name, role: user.role },
+//   };
+// };
 
-  const token = generateToken(user);
-  return { token };
-};
+// const refreshToken = async (userId) => {
+//   const user = await User.findById(userId);
+//   if (!user) throw ApiError.notFound("User not found");
 
-const getCurrentUser = async (userId) => {
-  const user = await User.findById(userId).lean();
-  if (!user) throw ApiError.notFound("User not found");
-  return user;
-};
+//   const token = generateToken(user);
+//   return { token };
+// };
 
-export { registerUser, loginUser, refreshToken, getCurrentUser };
+// const getCurrentUser = async (userId) => {
+//   const user = await User.findById(userId).lean();
+//   if (!user) throw ApiError.notFound("User not found");
+//   return user;
+// };
+
+// export { registerUser, loginUser, refreshToken, getCurrentUser };

@@ -1,42 +1,47 @@
-import jwt from "jsonwebtoken";
-import ApiError from "../utils/ApiError.js";
-import User from "../models/User.js";
+// ==========================================
+// FUTURE PHASE
+// Auth Middleware
+// ==========================================
 
-const JWT_SECRET = process.env.JWT_SECRET || "clouddeploy-dev-secret";
+// import jwt from "jsonwebtoken";
+// import ApiError from "../utils/ApiError.js";
+// import User from "../models/User.js";
 
-const authenticate = async (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
+// const JWT_SECRET = process.env.JWT_SECRET || "clouddeploy-dev-secret";
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return next(ApiError.unauthorized("No token provided"));
-    }
+// const authenticate = async (req, res, next) => {
+//   try {
+//     const authHeader = req.headers.authorization;
 
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, JWT_SECRET);
+//     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//       return next(ApiError.unauthorized("No token provided"));
+//     }
 
-    const user = await User.findById(decoded.id).lean();
-    if (!user || !user.isActive) {
-      return next(ApiError.unauthorized("User not found or inactive"));
-    }
+//     const token = authHeader.split(" ")[1];
+//     const decoded = jwt.verify(token, JWT_SECRET);
 
-    req.user = user;
-    next();
-  } catch (error) {
-    if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
-      return next(ApiError.unauthorized("Invalid or expired token"));
-    }
-    next(error);
-  }
-};
+//     const user = await User.findById(decoded.id).lean();
+//     if (!user || !user.isActive) {
+//       return next(ApiError.unauthorized("User not found or inactive"));
+//     }
 
-const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!req.user || !roles.includes(req.user.role)) {
-      return next(ApiError.forbidden("Insufficient permissions"));
-    }
-    next();
-  };
-};
+//     req.user = user;
+//     next();
+//   } catch (error) {
+//     if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
+//       return next(ApiError.unauthorized("Invalid or expired token"));
+//     }
+//     next(error);
+//   }
+// };
 
-export { authenticate, authorize };
+// const authorize = (...roles) => {
+//   return (req, res, next) => {
+//     if (!req.user || !roles.includes(req.user.role)) {
+//       return next(ApiError.forbidden("Insufficient permissions"));
+//     }
+//     next();
+//   };
+// };
+
+// export { authenticate, authorize };

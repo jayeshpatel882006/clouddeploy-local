@@ -41,18 +41,18 @@
 // };
 
 // export { deploymentService };
-import fs from "fs/promises";
+// ==========================================
+// Deployment Pipeline — Core Flow
+// ==========================================
+
 import { cloneRepository } from "../git/git.service.js";
 import { detectNodeProject } from "../node/node.service.js";
-import { installDependencies } from "../node/npm.service.js";
 import {
   detectDockerfile,
   generateDockerfile,
 } from "../docker/docker.service.js";
 import { buildDockerImage } from "../docker/docker.build.js";
-import { runDockerContainer } from "../docker/docker.run.js";
 import { pushDockerImage } from "../docker/docker.push.js";
-import { checkHealth } from "../health/health.service.js";
 import { generateDeploymentManifest } from "../kubernetes/manifest.service.js";
 import { generateImageTag } from "../utils/imageTag.js";
 import { createDeploymentMetadata } from "../deployment/deploymentMetadata.service.js";

@@ -1,76 +1,81 @@
-import RegistryImage from "../models/RegistryImage.js";
-import { listImages as dockerListImages } from "../engine/docker.engine.js";
-import ApiError from "../utils/ApiError.js";
+// ==========================================
+// FUTURE PHASE
+// Registry Service
+// ==========================================
 
-const listRegistryImages = async (query = {}) => {
-  const { search, page = 1, limit = 20 } = query;
-  const filter = {};
+// import RegistryImage from "../models/RegistryImage.js";
+// import { listImages as dockerListImages } from "../engine/docker.engine.js";
+// import ApiError from "../utils/ApiError.js";
 
-  if (search) {
-    filter.name = { $regex: search, $options: "i" };
-  }
+// const listRegistryImages = async (query = {}) => {
+//   const { search, page = 1, limit = 20 } = query;
+//   const filter = {};
 
-  const pageNum = Math.max(1, parseInt(page, 10) || 1);
-  const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 20));
-  const skip = (pageNum - 1) * limitNum;
+//   if (search) {
+//     filter.name = { $regex: search, $options: "i" };
+//   }
 
-  const [images, total] = await Promise.all([
-    RegistryImage.find(filter)
-      .sort({ updatedAt: -1 })
-      .skip(skip)
-      .limit(limitNum)
-      .lean(),
-    RegistryImage.countDocuments(filter),
-  ]);
+//   const pageNum = Math.max(1, parseInt(page, 10) || 1);
+//   const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 20));
+//   const skip = (pageNum - 1) * limitNum;
 
-  return {
-    images,
-    pagination: {
-      page: pageNum,
-      limit: limitNum,
-      total,
-      totalPages: Math.ceil(total / limitNum),
-    },
-  };
-};
+//   const [images, total] = await Promise.all([
+//     RegistryImage.find(filter)
+//       .sort({ updatedAt: -1 })
+//       .skip(skip)
+//       .limit(limitNum)
+//       .lean(),
+//     RegistryImage.countDocuments(filter),
+//   ]);
 
-const getImageTags = async (name) => {
-  const tags = await RegistryImage.find({ name })
-    .sort({ updatedAt: -1 })
-    .lean();
-  return tags;
-};
+//   return {
+//     images,
+//     pagination: {
+//       page: pageNum,
+//       limit: limitNum,
+//       total,
+//       totalPages: Math.ceil(total / limitNum),
+//     },
+//   };
+// };
 
-const deleteRegistryImage = async (id) => {
-  const image = await RegistryImage.findByIdAndDelete(id);
-  if (!image) throw ApiError.notFound(`Image not found with id: ${id}`);
-  return { id, status: "Deleted" };
-};
+// const getImageTags = async (name) => {
+//   const tags = await RegistryImage.find({ name })
+//     .sort({ updatedAt: -1 })
+//     .lean();
+//   return tags;
+// };
 
-const syncRegistryFromDocker = async () => {
-  const result = dockerListImages();
-  if (!result.success) throw ApiError.internal("Failed to list Docker images");
+// const deleteRegistryImage = async (id) => {
+//   const image = await RegistryImage.findByIdAndDelete(id);
+//   if (!image) throw ApiError.notFound(`Image not found with id: ${id}`);
+//   return { id, status: "Deleted" };
+// };
 
-  for (const img of result.images) {
-    await RegistryImage.findOneAndUpdate(
-      { name: img.repository, tag: img.tag },
-      {
-        name: img.repository,
-        tag: img.tag,
-        digest: img.id,
-        size: img.size,
-        pulledAt: new Date(),
-      },
-      { upsert: true, new: true },
-    );
-  }
+// const syncRegistryFromDocker = async () => {
+//   const result = dockerListImages();
+//   if (!result.success) throw ApiError.internal("Failed to list Docker images");
 
-  return { synced: result.images.length };
-};
+//   for (const img of result.images) {
+//     await RegistryImage.findOneAndUpdate(
+//       { name: img.repository, tag: img.tag },
+//       {
+//         name: img.repository,
+//         tag: img.tag,
+//         digest: img.id,
+//         size: img.size,
+//         pulledAt: new Date(),
+//       },
+//       { upsert: true, new: true },
+//     );
+//   }
 
-export {
-  listRegistryImages,
-  getImageTags,
-  deleteRegistryImage,
-  syncRegistryFromDocker,
-};
+//   return { synced: result.images.length };
+// };
+
+// export {
+//   listRegistryImages,
+//   getImageTags,
+//   deleteRegistryImage,
+//   syncRegistryFromDocker,
+// };

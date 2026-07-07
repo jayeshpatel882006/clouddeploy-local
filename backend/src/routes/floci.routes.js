@@ -1,42 +1,47 @@
-import { Router } from "express";
-import {
-  getBuckets,
-  addBucket,
-  getObjects,
-  getFunctions,
-  runFunction,
-  getUsers,
-  addUser,
-  getTopics,
-  publishMessage,
-  getQueues,
-  postMessage,
-} from "../controllers/floci.controller.js";
-import { authenticate, authorize } from "../middleware/auth.js";
+// ==========================================
+// FUTURE PHASE
+// Floci Module
+// ==========================================
 
-const router = Router();
+// import { Router } from "express";
+// import {
+//   getBuckets,
+//   addBucket,
+//   getObjects,
+//   getFunctions,
+//   runFunction,
+//   getUsers,
+//   addUser,
+//   getTopics,
+//   publishMessage,
+//   getQueues,
+//   postMessage,
+// } from "../controllers/floci.controller.js";
+// import { authenticate, authorize } from "../middleware/auth.js";
 
-router.use(authenticate);
+// const router = Router();
 
-/* ─── S3 ─────────────────────────────────────────── */
-router.get("/s3/buckets", getBuckets);
-router.post("/s3/buckets", authorize("admin"), addBucket);
-router.get("/s3/buckets/:bucketName/objects", getObjects);
+// router.use(authenticate);
 
-/* ─── Lambda ─────────────────────────────────────── */
-router.get("/lambda/functions", getFunctions);
-router.post("/lambda/functions/:functionName/invoke", runFunction);
+// /* ─── S3 ─────────────────────────────────────────── */
+// router.get("/s3/buckets", getBuckets);
+// router.post("/s3/buckets", authorize("admin"), addBucket);
+// router.get("/s3/buckets/:bucketName/objects", getObjects);
 
-/* ─── IAM ────────────────────────────────────────── */
-router.get("/iam/users", getUsers);
-router.post("/iam/users", authorize("admin"), addUser);
+// /* ─── Lambda ─────────────────────────────────────── */
+// router.get("/lambda/functions", getFunctions);
+// router.post("/lambda/functions/:functionName/invoke", runFunction);
 
-/* ─── SNS ────────────────────────────────────────── */
-router.get("/sns/topics", getTopics);
-router.post("/sns/publish", publishMessage);
+// /* ─── IAM ────────────────────────────────────────── */
+// router.get("/iam/users", getUsers);
+// router.post("/iam/users", authorize("admin"), addUser);
 
-/* ─── SQS ────────────────────────────────────────── */
-router.get("/sqs/queues", getQueues);
-router.post("/sqs/send", postMessage);
+// /* ─── SNS ────────────────────────────────────────── */
+// router.get("/sns/topics", getTopics);
+// router.post("/sns/publish", publishMessage);
 
-export default router;
+// /* ─── SQS ────────────────────────────────────────── */
+// router.get("/sqs/queues", getQueues);
+// router.post("/sqs/send", postMessage);
+
+// export default router;

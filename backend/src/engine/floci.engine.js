@@ -1,80 +1,85 @@
-/* ─── Floci — Local AWS-Compatible Services ──── */
+// ==========================================
+// FUTURE PHASE
+// Floci Engine (Local AWS-Compatible Services)
+// ==========================================
 
-/* S3 */
+// /* ─── Floci — Local AWS-Compatible Services ──── */
 
-const listBuckets = async () => {
-  // Placeholder — connect to local S3 (e.g., MinIO)
-  return { success: true, buckets: [] };
-};
+// /* S3 */
 
-const createBucket = async (bucketName) => {
-  // Placeholder
-  return { success: true, bucket: bucketName };
-};
+// const listBuckets = async () => {
+//   // Placeholder — connect to local S3 (e.g., MinIO)
+//   return { success: true, buckets: [] };
+// };
 
-const listObjects = async (bucketName) => {
-  // Placeholder
-  return { success: true, bucket: bucketName, objects: [] };
-};
+// const createBucket = async (bucketName) => {
+//   // Placeholder
+//   return { success: true, bucket: bucketName };
+// };
 
-/* Lambda */
+// const listObjects = async (bucketName) => {
+//   // Placeholder
+//   return { success: true, bucket: bucketName, objects: [] };
+// };
 
-const listFunctions = async () => {
-  // Placeholder
-  return { success: true, functions: [] };
-};
+// /* Lambda */
 
-const invokeFunction = async (functionName, payload) => {
-  // Placeholder
-  return { success: true, functionName, result: null };
-};
+// const listFunctions = async () => {
+//   // Placeholder
+//   return { success: true, functions: [] };
+// };
 
-/* IAM */
+// const invokeFunction = async (functionName, payload) => {
+//   // Placeholder
+//   return { success: true, functionName, result: null };
+// };
 
-const listUsers = async () => {
-  // Placeholder
-  return { success: true, users: [] };
-};
+// /* IAM */
 
-const createUser = async (username) => {
-  // Placeholder
-  return { success: true, username };
-};
+// const listUsers = async () => {
+//   // Placeholder
+//   return { success: true, users: [] };
+// };
 
-/* SNS */
+// const createUser = async (username) => {
+//   // Placeholder
+//   return { success: true, username };
+// };
 
-const listTopics = async () => {
-  // Placeholder
-  return { success: true, topics: [] };
-};
+// /* SNS */
 
-const publishToTopic = async (topicArn, message) => {
-  // Placeholder
-  return { success: true, topicArn, messageId: crypto.randomUUID() };
-};
+// const listTopics = async () => {
+//   // Placeholder
+//   return { success: true, topics: [] };
+// };
 
-/* SQS */
+// const publishToTopic = async (topicArn, message) => {
+//   // Placeholder
+//   return { success: true, topicArn, messageId: crypto.randomUUID() };
+// };
 
-const listQueues = async () => {
-  // Placeholder
-  return { success: true, queues: [] };
-};
+// /* SQS */
 
-const sendMessage = async (queueUrl, messageBody) => {
-  // Placeholder
-  return { success: true, queueUrl, messageId: crypto.randomUUID() };
-};
+// const listQueues = async () => {
+//   // Placeholder
+//   return { success: true, queues: [] };
+// };
 
-export {
-  listBuckets,
-  createBucket,
-  listObjects,
-  listFunctions,
-  invokeFunction,
-  listUsers,
-  createUser,
-  listTopics,
-  publishToTopic,
-  listQueues,
-  sendMessage,
-};
+// const sendMessage = async (queueUrl, messageBody) => {
+//   // Placeholder
+//   return { success: true, queueUrl, messageId: crypto.randomUUID() };
+// };
+
+// export {
+//   listBuckets,
+//   createBucket,
+//   listObjects,
+//   listFunctions,
+//   invokeFunction,
+//   listUsers,
+//   createUser,
+//   listTopics,
+//   publishToTopic,
+//   listQueues,
+//   sendMessage,
+// };

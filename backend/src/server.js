@@ -7,7 +7,7 @@ dotenv.config();
 
 /* ─── Environment Validation ─────────────────── */
 
-const REQUIRED_ENV_VARS = ["MONGODB_URI", "JWT_SECRET"];
+const REQUIRED_ENV_VARS = ["MONGODB_URI"];
 
 const validateEnvironment = () => {
   const missing = REQUIRED_ENV_VARS.filter((v) => !process.env[v]);
@@ -37,7 +37,6 @@ const startServer = async () => {
 
   server = app.listen(PORT, () => {
     logger.info(`🚀 CloudDeploy API running on port ${PORT}`);
-    logger.info(`📚 API Docs: http://localhost:${PORT}/api/docs`);
   });
 };
 

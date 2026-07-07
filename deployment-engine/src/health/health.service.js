@@ -1,19 +1,24 @@
-export const checkHealth = async (port = 3000) => {
-  try {
-    const response = await fetch(`http://localhost:${port}/health`);
+// ==========================================
+// TODO: Future Phase
+// Health check for deployed containers
+// ==========================================
 
-    if (!response.ok) {
-      throw new Error("Health endpoint returned a non-success status.");
-    }
+// export const checkHealth = async (port = 3000) => {
+//   try {
+//     const response = await fetch(`http://localhost:${port}/health`);
 
-    const data = await response.json();
+//     if (!response.ok) {
+//       throw new Error("Health endpoint returned a non-success status.");
+//     }
 
-    return {
-      success: true,
-      status: "HEALTHY",
-      response: data,
-    };
-  } catch (error) {
-    throw new Error(`Health check failed.\n${error.message}`);
-  }
-};
+//     const data = await response.json();
+
+//     return {
+//       success: true,
+//       status: "HEALTHY",
+//       response: data,
+//     };
+//   } catch (error) {
+//     throw new Error(`Health check failed.\n${error.message}`);
+//   }
+// };

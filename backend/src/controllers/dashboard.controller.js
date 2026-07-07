@@ -1,11 +1,16 @@
-import asyncHandler from "../utils/asyncHandler.js";
-import ApiResponse from "../utils/ApiResponse.js";
-import { getDashboardOverview } from "../services/dashboard.service.js";
+// ==========================================
+// FUTURE PHASE
+// Dashboard Controller
+// ==========================================
 
-const getDashboard = asyncHandler(async (req, res) => {
-  const data = await getDashboardOverview();
+// import asyncHandler from "../utils/asyncHandler.js";
+// import ApiResponse from "../utils/ApiResponse.js";
+// import { getDashboardOverview } from "../services/dashboard.service.js";
 
-  return new ApiResponse(200, data, "Dashboard overview retrieved").send(res);
-});
+// const getDashboard = asyncHandler(async (req, res) => {
+//   const data = await getDashboardOverview();
 
-export { getDashboard };
+//   return new ApiResponse(200, data, "Dashboard overview retrieved").send(res);
+// });
+
+// export { getDashboard };

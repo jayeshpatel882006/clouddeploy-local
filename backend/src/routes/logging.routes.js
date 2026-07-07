@@ -1,9 +1,14 @@
-import { Router } from "express";
-import { getLogs } from "../controllers/logging.controller.js";
-import { authenticate } from "../middleware/auth.js";
+// ==========================================
+// FUTURE PHASE
+// Logging Module
+// ==========================================
 
-const router = Router();
+// import { Router } from "express";
+// import { getLogs } from "../controllers/logging.controller.js";
+// import { authenticate } from "../middleware/auth.js";
 
-router.get("/", authenticate, getLogs);
+// const router = Router();
 
-export default router;
+// router.get("/", authenticate, getLogs);
+
+// export default router;

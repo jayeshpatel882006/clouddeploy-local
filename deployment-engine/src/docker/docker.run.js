@@ -1,28 +1,33 @@
-import { exec } from "child_process";
-import { promisify } from "util";
+// ==========================================
+// TODO: Future Phase
+// Docker container execution (currently paused)
+// ==========================================
 
-const execAsync = promisify(exec);
+// import { exec } from "child_process";
+// import { promisify } from "util";
 
-export const runDockerContainer = async (
-  imageName,
-  imageTag = "latest",
-  containerPort = 3000,
-) => {
-  try {
-    const containerName = `${imageName}-${Date.now()}`;
+// const execAsync = promisify(exec);
 
-    const command = `docker run -d --name ${containerName} -p ${containerPort}:${containerPort} ${imageName}:${imageTag}`;
+// export const runDockerContainer = async (
+//   imageName,
+//   imageTag = "latest",
+//   containerPort = 3000,
+// ) => {
+//   try {
+//     const containerName = `${imageName}-${Date.now()}`;
 
-    const { stdout } = await execAsync(command);
+//     const command = `docker run -d --name ${containerName} -p ${containerPort}:${containerPort} ${imageName}:${imageTag}`;
 
-    return {
-      success: true,
-      containerId: stdout.trim(),
-      containerName,
-      image: `${imageName}:${imageTag}`,
-      port: containerPort,
-    };
-  } catch (error) {
-    throw new Error(`Failed to run Docker container.\n${error.message}`);
-  }
-};
+//     const { stdout } = await execAsync(command);
+
+//     return {
+//       success: true,
+//       containerId: stdout.trim(),
+//       containerName,
+//       image: `${imageName}:${imageTag}`,
+//       port: containerPort,
+//     };
+//   } catch (error) {
+//     throw new Error(`Failed to run Docker container.\n${error.message}`);
+//   }
+// };
