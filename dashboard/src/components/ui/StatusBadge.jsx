@@ -19,6 +19,12 @@ const statusStyles = {
   NotReady: "bg-red-500/10 text-red-400 border-red-500/20",
   // Events
   Normal: "bg-green-500/10 text-green-400 border-green-500/20",
+  // Backend deployment statuses
+  REGISTERED: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  CLONING: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  BUILDING: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+  PUSHING: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+  DEPLOYING: "bg-purple-500/10 text-purple-400 border-purple-500/20",
 };
 
 const statusDots = {
@@ -39,6 +45,12 @@ const statusDots = {
   Ready: "bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.5)]",
   NotReady: "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.5)]",
   Normal: "bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.5)]",
+  // Backend deployment statuses
+  REGISTERED: "bg-blue-500 shadow-[0_0_6px_rgba(59,130,246,0.5)]",
+  CLONING: "bg-blue-500 shadow-[0_0_6px_rgba(59,130,246,0.5)]",
+  BUILDING: "bg-yellow-500 shadow-[0_0_6px_rgba(234,179,8,0.5)]",
+  PUSHING: "bg-yellow-500 shadow-[0_0_6px_rgba(234,179,8,0.5)]",
+  DEPLOYING: "bg-purple-500 shadow-[0_0_6px_rgba(168,85,247,0.5)]",
 };
 
 const StatusBadge = ({ status, size = "sm", showDot = true }) => {

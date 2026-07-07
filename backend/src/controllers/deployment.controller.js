@@ -48,7 +48,15 @@
 //   updateDeployment,
 //   deleteDeployment,
 // };
-import { registerRepository } from "../services/deployment.service.js";
+import {
+  registerRepository,
+  getDeploymentsService,
+  getDeploymentByIdService,
+} from "../services/deployment.service.js";
+
+// ==========================================
+// Create Deployment
+// ==========================================
 
 export const createDeployment = async (req, res, next) => {
   try {
@@ -56,10 +64,46 @@ export const createDeployment = async (req, res, next) => {
 
     const deployment = await registerRepository(repositoryUrl, branch);
 
-    // Return immediately
     res.status(202).json({
       success: true,
       message: "Deployment queued successfully.",
+      data: deployment,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ==========================================
+// List Deployments
+// ==========================================
+
+export const getDeployments = async (req, res, next) => {
+  try {
+    const deployments = await getDeploymentsService();
+
+    res.json({
+      success: true,
+      count: deployments.length,
+      data: { deployments },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ==========================================
+// Get Deployment by ID
+// ==========================================
+
+export const getDeploymentById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deployment = await getDeploymentByIdService(id);
+
+    res.json({
+      success: true,
+      message: "Deployment retrieved",
       data: deployment,
     });
   } catch (error) {

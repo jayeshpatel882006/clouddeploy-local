@@ -1,5 +1,5 @@
 import Card from "@/components/ui/Card";
-import StatusBadge from "@/components/deployments/StatusBadge";
+import StatusBadge from "@/components/ui/StatusBadge";
 import { containerUsage } from "./monitoringData";
 
 const ContainerUsage = () => {

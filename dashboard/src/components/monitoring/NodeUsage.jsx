@@ -1,6 +1,6 @@
 import { Server } from "lucide-react";
 import Card from "@/components/ui/Card";
-import StatusBadge from "@/components/deployments/StatusBadge";
+import StatusBadge from "@/components/ui/StatusBadge";
 import { nodeUsage } from "./monitoringData";
 
 const Bar = ({ percent, color = "bg-blue-500" }) => (

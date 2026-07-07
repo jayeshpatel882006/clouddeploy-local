@@ -101,11 +101,22 @@
 // router.delete("/:id", deleteDeployment);
 
 // export default router;
-import express from "express";
-import { createDeployment } from "../controllers/deployment.controller.js";
+import { Router } from "express";
+import {
+  createDeployment,
+  getDeployments,
+  getDeploymentById,
+} from "../controllers/deployment.controller.js";
 
-const router = express.Router();
+const router = Router();
 
+router.get("/", getDeployments);
+router.get("/:id", getDeploymentById);
 router.post("/", createDeployment);
+
+// ==========================================
+// FUTURE PHASE
+// PUT /deployments/:id, DELETE /deployments/:id
+// ==========================================
 
 export default router;

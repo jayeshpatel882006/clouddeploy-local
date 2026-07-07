@@ -1,7 +1,7 @@
 import { RefreshCw, Cloud } from "lucide-react";
 import { useState } from "react";
 
-const DashboardHeader = () => {
+const DashboardHeader = ({ onRefresh: externalRefresh }) => {
   const [rotating, setRotating] = useState(false);
 
   const now = new Date();
@@ -19,6 +19,9 @@ const DashboardHeader = () => {
   const handleRefresh = () => {
     setRotating(true);
     setTimeout(() => setRotating(false), 600);
+    if (externalRefresh) {
+      externalRefresh();
+    }
   };
 
   return (

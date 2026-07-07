@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StatusBadge from "@/components/deployments/StatusBadge";
+import StatusBadge from "@/components/ui/StatusBadge";
 import ClusterHeader from "@/components/clusters/ClusterHeader";
 import ClusterOverview from "@/components/clusters/ClusterOverview";
 import K8sTable from "@/components/clusters/K8sTable";

@@ -119,6 +119,7 @@
 import Deployment from "../models/Deployment.js";
 import DeploymentHistory from "../models/DeploymentHistory.js";
 import { triggerDeployment } from "../engine/deployment.engine.js";
+import ApiError from "../utils/ApiError.js";
 
 export const registerRepository = async (repositoryUrl, branch = "main") => {
   const githubRegex = /^https:\/\/github\.com\/[\w.-]+\/[\w.-]+(\.git)?$/;
@@ -191,4 +192,24 @@ export const processDeployment = async (deployment) => {
 
 export const saveDeploymentHistory = async (deployment) => {
   return await DeploymentHistory.create(deployment);
+};
+
+// ==========================================
+// List & Get Deployments
+// ==========================================
+
+export const getDeploymentsService = async () => {
+  const deployments = await Deployment.find({})
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return deployments;
+};
+
+export const getDeploymentByIdService = async (id) => {
+  const deployment = await Deployment.findById(id).lean();
+  if (!deployment) {
+    throw ApiError.notFound(`Deployment not found with id: ${id}`);
+  }
+  return deployment;
 };

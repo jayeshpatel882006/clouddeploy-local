@@ -1,44 +1,18 @@
-import { Box, Container, Server, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react";
+import { Box, Container, Server, Rocket, TrendingUp, TrendingDown } from "lucide-react";
 import { motion } from "framer-motion";
 
-const stats = [
-  {
-    title: "Applications",
-    value: "12",
-    change: "+2",
-    trend: "up",
-    subtitle: "6 running, 4 stopped, 2 pending",
-    icon: Box,
-    color: "blue",
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
   },
-  {
-    title: "Running Pods",
-    value: "47",
-    change: "+5",
-    trend: "up",
-    subtitle: "Across 3 namespaces",
-    icon: Container,
-    color: "green",
-  },
-  {
-    title: "Clusters",
-    value: "3",
-    change: "All Healthy",
-    trend: "up",
-    subtitle: "2 nodes, 1 control plane",
-    icon: Server,
-    color: "purple",
-  },
-  {
-    title: "Active Alerts",
-    value: "2",
-    change: "-1",
-    trend: "down",
-    subtitle: "1 warning, 1 critical",
-    icon: AlertTriangle,
-    color: "red",
-  },
-];
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
 
 const colorMap = {
   blue: {
@@ -67,20 +41,46 @@ const colorMap = {
   },
 };
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-};
+const StatsCards = ({ stats }) => {
+  const statCards = [
+    {
+      title: "Total Deployments",
+      value: String(stats?.total || 0),
+      change: "",
+      trend: "neutral",
+      subtitle: `${stats?.running || 0} running, ${stats?.failed || 0} failed`,
+      icon: Box,
+      color: "blue",
+    },
+    {
+      title: "Running",
+      value: String(stats?.running || 0),
+      change: "",
+      trend: "up",
+      subtitle: "Currently active",
+      icon: Rocket,
+      color: "green",
+    },
+    {
+      title: "Building",
+      value: String(stats?.building || 0),
+      change: "",
+      trend: "up",
+      subtitle: `${stats?.pending || 0} pending`,
+      icon: Container,
+      color: "purple",
+    },
+    {
+      title: "Failed",
+      value: String(stats?.failed || 0),
+      change: "",
+      trend: "down",
+      subtitle: "Deployments that failed",
+      icon: Server,
+      color: "red",
+    },
+  ];
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
-};
-
-const StatsCards = () => {
   return (
     <motion.div
       variants={containerVariants}
@@ -88,7 +88,7 @@ const StatsCards = () => {
       animate="visible"
       className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
     >
-      {stats.map((stat) => {
+      {statCards.map((stat) => {
         const Icon = stat.icon;
         const c = colorMap[stat.color];
 
@@ -106,20 +106,15 @@ const StatsCards = () => {
                 <div className={`rounded-lg ${c.bg} p-2.5 ${c.text}`}>
                   <Icon size={20} />
                 </div>
-                <div className="flex items-center gap-1 rounded-full bg-slate-800/80 px-2 py-0.5 text-xs">
-                  {stat.trend === "up" ? (
-                    <TrendingUp size={12} className="text-green-400" />
-                  ) : (
-                    <TrendingDown size={12} className="text-red-400" />
-                  )}
-                  <span
-                    className={
-                      stat.trend === "up" ? "text-green-400" : "text-red-400"
-                    }
-                  >
-                    {stat.change}
-                  </span>
-                </div>
+                {stat.trend !== "neutral" && (
+                  <div className="flex items-center gap-1 rounded-full bg-slate-800/80 px-2 py-0.5 text-xs">
+                    {stat.trend === "up" ? (
+                      <TrendingUp size={12} className="text-green-400" />
+                    ) : (
+                      <TrendingDown size={12} className="text-red-400" />
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className="mt-4">
