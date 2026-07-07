@@ -60,8 +60,9 @@ import { generateServiceManifest } from "../kubernetes/serviceManifest.service.j
 import { deployManifest } from "../kubernetes/kubernetes.deploy.js";
 import { waitForDeployment } from "../kubernetes/kubernetes.wait.js";
 import { cleanupDeployment } from "../cleanup/cleanup.service.js";
+import { updateStatus } from "../backend/backend.service.js";
 
-export const deploymentService = async (deployment, onProgress = () => {}) => {
+export const deploymentService = async (deployment) => {
   // ==========================================================
   // STEP 1 : Clone Repository
   // ==========================================================
@@ -69,7 +70,7 @@ export const deploymentService = async (deployment, onProgress = () => {}) => {
     deployment.repositoryUrl,
     deployment.branch,
   );
-  await onProgress("CLONING");
+  await updateStatus(deployment._id, "CLONING");
 
   try {
     // ==========================================================
@@ -111,7 +112,7 @@ export const deploymentService = async (deployment, onProgress = () => {}) => {
       imageName,
       imageTag,
     );
-    await onProgress("BUILDING");
+    await updateStatus(deployment._id, "BUILDING");
 
     // ==========================================================
     // STEP 7 : Run Docker Container (Paused)
@@ -138,7 +139,7 @@ export const deploymentService = async (deployment, onProgress = () => {}) => {
     // STEP 9 : Push Image to Local Registry
     // ==========================================================
     const pushedImage = await pushDockerImage(imageName, imageTag);
-    await onProgress("PUSHING");
+    await updateStatus(deployment._id, "PUSHING");
 
     // ==========================================================
     // STEP 10 : Generate Kubernetes Deployment Manifest
@@ -160,7 +161,7 @@ export const deploymentService = async (deployment, onProgress = () => {}) => {
       containerPort: 3000,
       servicePort: 80,
     });
-    await onProgress("DEPLOYING");
+    await updateStatus(deployment._id, "DEPLOYING");
     const kubernetesService = await deployManifest(serviceManifest);
 
     const deploymentStatus = await waitForDeployment(imageName);
@@ -175,7 +176,7 @@ export const deploymentService = async (deployment, onProgress = () => {}) => {
     // ==========================================================
     // SUCCESS RESPONSE
     // ==========================================================
-    await onProgress("RUNNING");
+    await updateStatus(deployment._id, "RUNNING");
     return {
       success: true,
       status: deploymentStatus.status,
@@ -201,7 +202,7 @@ export const deploymentService = async (deployment, onProgress = () => {}) => {
       cleanup,
     };
   } catch (error) {
-    await onProgress("FAILED");
+    await updateStatus(deployment._id, "FAILED");
     throw {
       success: false,
 

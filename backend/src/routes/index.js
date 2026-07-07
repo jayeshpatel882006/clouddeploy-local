@@ -7,6 +7,7 @@ import registryRoutes from "./registry.routes.js";
 import monitoringRoutes from "./monitoring.routes.js";
 import loggingRoutes from "./logging.routes.js";
 import flociRoutes from "./floci.routes.js";
+import internalRoutes from "./internal.routes.js";
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.use("/registry", registryRoutes);
 router.use("/monitoring", monitoringRoutes);
 router.use("/logs", loggingRoutes);
 router.use("/floci", flociRoutes);
+router.use("/internal", internalRoutes);
 
 export default router;

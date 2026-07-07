@@ -154,6 +154,7 @@ export const processDeployment = async (deployment) => {
     const result = await triggerDeployment({
       repositoryUrl: deployment.repositoryUrl,
       branch: deployment.branch,
+      _id: deployment._id,
     });
 
     // ==========================================

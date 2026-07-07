@@ -2,7 +2,7 @@ import axios from "axios";
 
 const ENGINE_URL = process.env.DEPLOYMENT_ENGINE_URL || "http://localhost:6000";
 
-export const triggerDeployment = async (deployment, onProgress) => {
+export const triggerDeployment = async (deployment) => {
   try {
     const { data } = await axios.post(`${ENGINE_URL}/deploy`, deployment);
 
