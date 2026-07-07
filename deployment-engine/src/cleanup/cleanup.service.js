@@ -7,7 +7,6 @@ const execAsync = promisify(exec);
 export const cleanupDeployment = async ({ workspacePath, containerName }) => {
   const result = {};
 
-  // Remove cloned repository
   if (workspacePath) {
     await fs.rm(workspacePath, {
       recursive: true,
@@ -17,7 +16,6 @@ export const cleanupDeployment = async ({ workspacePath, containerName }) => {
     result.workspace = "Deleted";
   }
 
-  // Remove temporary validation container
   if (containerName) {
     try {
       await execAsync(`docker rm -f ${containerName}`);

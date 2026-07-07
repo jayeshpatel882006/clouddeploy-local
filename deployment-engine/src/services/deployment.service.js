@@ -196,16 +196,14 @@ export const deploymentService = async (deployment) => {
       cleanup,
     };
   } catch (error) {
-    // ==========================================================
-    // CLEANUP
-    // ==========================================================
-    // Delete cloned repository if any step fails.
+    throw {
+      success: false,
 
-    await fs.rm(clonedRepository.path, {
-      recursive: true,
-      force: true,
-    });
+      message: error.message,
 
-    throw error;
+      debug: {
+        workspace: clonedRepository.path,
+      },
+    };
   }
 };
