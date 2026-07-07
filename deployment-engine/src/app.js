@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-
+import deleteRoutes from "./routes/delete.routes.js";
 import deploymentRoutes from "./routes/deployment.routes.js";
 
 const app = express();
@@ -21,5 +21,6 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/deploy", deploymentRoutes);
+app.use("/delete", deleteRoutes);
 
 export default app;
