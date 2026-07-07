@@ -124,7 +124,7 @@ const DeploymentRow = memo(({ deployment, onView, onDelete }) => {
           <button
             onClick={() => onDelete?.(deployment)}
             className="rounded-lg p-1.5 text-slate-500 opacity-0 transition-all hover:bg-red-900/30 hover:text-red-400 group-hover:opacity-100"
-            title="Delete (coming soon)"
+            title="Delete deployment"
           >
             <Trash2 size={15} />
           </button>

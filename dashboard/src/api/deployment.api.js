@@ -21,13 +21,13 @@ export const createDeployment = async (payload) => {
 };
 
 // ==========================================
-// FUTURE PHASE: Delete / Redeploy
+// Delete / Redeploy
 // ==========================================
 
-// export const deleteDeployment = async (id) => {
-//   const { data } = await apiClient.delete(`/deployments/${id}`);
-//   return data;
-// };
+export const deleteDeployment = async (id) => {
+  const { data } = await apiClient.delete(`/deployments/${id}`);
+  return data;
+};
 
 // export const redeployDeployment = async (id) => {
 //   const { data } = await apiClient.post(`/deployments/${id}/redeploy`);

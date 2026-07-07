@@ -41,6 +41,13 @@ const useDeployments = ({ pollInterval = 2000 } = {}) => {
     return newDep;
   }, []);
 
+  // ── Delete deployment ───────────────────────────────────────
+  const deleteDeployment = useCallback(async (id) => {
+    await deploymentApi.deleteDeployment(id);
+    setDeployments((prev) => prev.filter((d) => d.id !== id));
+    return true;
+  }, []);
+
   // ── Polling ─────────────────────────────────────────────────
   const pollDeployment = useCallback(async (id) => {
     try {
@@ -99,6 +106,7 @@ const useDeployments = ({ pollInterval = 2000 } = {}) => {
     loading,
     error,
     createDeployment,
+    deleteDeployment,
     refresh,
     fetchDeployment,
   };

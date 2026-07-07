@@ -5,6 +5,7 @@ import DeploymentStats from "./components/DeploymentStats";
 import DeploymentTable from "./components/DeploymentTable";
 import DeploymentDetailsDrawer from "./components/DeploymentDetailsDrawer";
 import CreateDeploymentDialog from "./components/CreateDeploymentDialog";
+import DeleteDeploymentDialog from "./components/DeleteDeploymentDialog";
 import LoadingState from "./components/LoadingState";
 import ErrorState from "./components/ErrorState";
 import useDeployments from "./hooks/useDeployments";
@@ -16,12 +17,13 @@ const toastStyle = {
 };
 
 const Deployments = () => {
-  const { deployments, stats, loading, error, createDeployment, refresh } =
+  const { deployments, stats, loading, error, createDeployment, deleteDeployment, refresh } =
     useDeployments();
 
   const [search, setSearch] = useState("");
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [createOpen, setCreateOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const [viewDrawer, setViewDrawer] = useState(null);
 
   // ── Create deployment ────────────────────────────────────────
@@ -45,9 +47,18 @@ const Deployments = () => {
     setViewDrawer(deployment);
   }, []);
 
-  // ── Delete (placeholder) ─────────────────────────────────────
-  const handleDelete = useCallback((deployment) => {
-    toast.error("Delete coming soon", { style: toastStyle });
+  // ── Delete deployment ────────────────────────────────────────
+  const handleDelete = useCallback(async (deploymentId) => {
+    await deleteDeployment(deploymentId);
+    toast.success("Deployment deleted successfully", { style: toastStyle });
+  }, [deleteDeployment]);
+
+  const handleDeleteRequest = useCallback((deployment) => {
+    setDeleteTarget(deployment);
+  }, []);
+
+  const handleDeleteClose = useCallback(() => {
+    setDeleteTarget(null);
   }, []);
 
   // ── Loading ──────────────────────────────────────────────────
@@ -95,7 +106,7 @@ const Deployments = () => {
         search={search}
         selectedStatuses={selectedStatuses}
         onView={handleView}
-        onDelete={handleDelete}
+        onDelete={handleDeleteRequest}
         onCreateDeployment={() => setCreateOpen(true)}
       />
 
@@ -104,6 +115,14 @@ const Deployments = () => {
         isOpen={createOpen}
         onClose={() => setCreateOpen(false)}
         onCreate={handleCreate}
+      />
+
+      {/* Delete Dialog */}
+      <DeleteDeploymentDialog
+        isOpen={!!deleteTarget}
+        onClose={handleDeleteClose}
+        deployment={deleteTarget}
+        onDelete={handleDelete}
       />
 
       {/* Details Drawer */}
