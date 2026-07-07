@@ -1,24 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, FolderOpen, HardDrive, Server, AlertTriangle } from "lucide-react";
 import SettingsSection from "./SettingsSection";
-import { dockerDefaults } from "./settingsData";
+import { useSettings } from "@/hooks/useSettings";
+import PopoverSelect from "@/components/ui/PopoverSelect";
 
 const inputClass = "w-full rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-blue-600 focus:ring-1 focus:ring-blue-600/30";
 const labelClass = "block text-xs font-medium text-slate-400 mb-1.5";
-const selectClass = inputClass + " appearance-none cursor-pointer";
 const toggleTrack = "relative inline-flex h-6 w-11 cursor-pointer items-center rounded-full transition-colors";
 const toggleCircle = "inline-block h-4 w-4 rounded-full bg-white shadow transition-transform";
 
+const storageDriverOptions = [
+  { value: "overlay2", label: "overlay2" },
+  { value: "overlay", label: "overlay" },
+  { value: "aufs", label: "aufs" },
+  { value: "devicemapper", label: "devicemapper" },
+  { value: "btrfs", label: "btrfs" },
+  { value: "zfs", label: "zfs" },
+  { value: "vfs", label: "vfs" },
+];
+
+const logDriverOptions = [
+  { value: "json-file", label: "json-file" },
+  { value: "journald", label: "journald" },
+  { value: "syslog", label: "syslog" },
+  { value: "gelf", label: "gelf" },
+  { value: "fluentd", label: "fluentd" },
+  { value: "awslogs", label: "awslogs" },
+  { value: "none", label: "none" },
+];
+
 const DockerSettings = () => {
-  const [data, setData] = useState(dockerDefaults);
+  const { settings, updateSection } = useSettings();
+  const [data, setData] = useState({ ...settings.docker });
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setData({ ...settings.docker });
+  }, [settings.docker]);
 
   const handleChange = (field, value) => setData((prev) => ({ ...prev, [field]: value }));
 
   const handleSave = () => {
+    updateSection("docker", data);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
+
+  const hasChanges = JSON.stringify(data) !== JSON.stringify(settings.docker);
 
   return (
     <SettingsSection
@@ -27,8 +55,9 @@ const DockerSettings = () => {
       headerRight={
         <button
           onClick={handleSave}
-          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] ${
-            saved ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+          disabled={!hasChanges}
+          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed ${
+            saved ? "bg-green-600" : "bg-[var(--accent)] hover:bg-[var(--accent-hover)]"
           }`}
         >
           {saved ? "Saved!" : "Save Changes"}
@@ -53,21 +82,13 @@ const DockerSettings = () => {
             <input type="text" value={data.dataRoot} onChange={(e) => handleChange("dataRoot", e.target.value)} className={inputClass + " pl-9 font-mono text-xs"} />
           </div>
         </div>
-        <div className="space-y-1.5">
-          <label className={labelClass}>Storage Driver</label>
-          <div className="relative">
-            <HardDrive size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-            <select value={data.storageDriver} onChange={(e) => handleChange("storageDriver", e.target.value)} className={selectClass + " pl-9"}>
-              <option value="overlay2">overlay2</option>
-              <option value="overlay">overlay</option>
-              <option value="aufs">aufs</option>
-              <option value="devicemapper">devicemapper</option>
-              <option value="btrfs">btrfs</option>
-              <option value="zfs">zfs</option>
-              <option value="vfs">vfs</option>
-            </select>
-          </div>
-        </div>
+        <PopoverSelect
+          label="Storage Driver"
+          icon={HardDrive}
+          value={data.storageDriver}
+          onChange={(v) => handleChange("storageDriver", v)}
+          options={storageDriverOptions}
+        />
       </div>
 
       {/* Registry Mirrors */}
@@ -91,18 +112,12 @@ const DockerSettings = () => {
 
       {/* Log Driver & Max Log Size */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-1.5">
-          <label className={labelClass}>Log Driver</label>
-          <select value={data.logDriver} onChange={(e) => handleChange("logDriver", e.target.value)} className={selectClass}>
-            <option value="json-file">json-file</option>
-            <option value="journald">journald</option>
-            <option value="syslog">syslog</option>
-            <option value="gelf">gelf</option>
-            <option value="fluentd">fluentd</option>
-            <option value="awslogs">awslogs</option>
-            <option value="none">none</option>
-          </select>
-        </div>
+        <PopoverSelect
+          label="Log Driver"
+          value={data.logDriver}
+          onChange={(v) => handleChange("logDriver", v)}
+          options={logDriverOptions}
+        />
         <div className="space-y-1.5">
           <label className={labelClass}>Max Log Size</label>
           <input type="text" value={data.maxLogSize} onChange={(e) => handleChange("maxLogSize", e.target.value)} className={inputClass} />
@@ -120,7 +135,7 @@ const DockerSettings = () => {
         </div>
         <button
           onClick={() => handleChange("experimentalFeatures", !data.experimentalFeatures)}
-          className={`${toggleTrack} ${data.experimentalFeatures ? "bg-blue-600" : "bg-slate-700"}`}
+          className={`${toggleTrack} ${data.experimentalFeatures ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
         >
           <span className={`${toggleCircle} ${data.experimentalFeatures ? "translate-x-6" : "translate-x-1"}`} />
         </button>

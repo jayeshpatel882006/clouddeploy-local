@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bell, Mail, Globe, MessageCircle, Clock, Shield, AlertTriangle, Info, CheckCircle } from "lucide-react";
 import SettingsSection from "./SettingsSection";
-import { notificationDefaults } from "./settingsData";
+import { useSettings } from "@/hooks/useSettings";
+import PopoverSelect from "@/components/ui/PopoverSelect";
 
 const inputClass = "w-full rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-blue-600 focus:ring-1 focus:ring-blue-600/30";
 const labelClass = "block text-xs font-medium text-slate-400 mb-1.5";
-const selectClass = inputClass + " appearance-none cursor-pointer";
 const toggleTrack = "relative inline-flex h-6 w-11 cursor-pointer items-center rounded-full transition-colors";
 const toggleCircle = "inline-block h-4 w-4 rounded-full bg-white shadow transition-transform";
+
+const digestOptions = [
+  { value: "realtime", label: "Real-time" },
+  { value: "hourly", label: "Hourly" },
+  { value: "daily", label: "Daily" },
+  { value: "weekly", label: "Weekly" },
+];
 
 const levelConfig = {
   critical: { icon: Shield, color: "text-red-400", bg: "bg-red-500/10" },
@@ -17,8 +24,13 @@ const levelConfig = {
 };
 
 const NotificationsSettings = () => {
-  const [data, setData] = useState(notificationDefaults);
+  const { settings, updateSection } = useSettings();
+  const [data, setData] = useState({ ...settings.notifications });
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setData({ ...settings.notifications });
+  }, [settings.notifications]);
 
   const handleChange = (field, value) => setData((prev) => ({ ...prev, [field]: value }));
 
@@ -30,9 +42,12 @@ const NotificationsSettings = () => {
   };
 
   const handleSave = () => {
+    updateSection("notifications", data);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
+
+  const hasChanges = JSON.stringify(data) !== JSON.stringify(settings.notifications);
 
   return (
     <SettingsSection
@@ -41,8 +56,9 @@ const NotificationsSettings = () => {
       headerRight={
         <button
           onClick={handleSave}
-          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] ${
-            saved ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+          disabled={!hasChanges}
+          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed ${
+            saved ? "bg-green-600" : "bg-[var(--accent)] hover:bg-[var(--accent-hover)]"
           }`}
         >
           {saved ? "Saved!" : "Save Changes"}
@@ -60,7 +76,7 @@ const NotificationsSettings = () => {
         </div>
         <button
           onClick={() => handleChange("emailNotifications", !data.emailNotifications)}
-          className={`${toggleTrack} ${data.emailNotifications ? "bg-blue-600" : "bg-slate-700"}`}
+          className={`${toggleTrack} ${data.emailNotifications ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
         >
           <span className={`${toggleCircle} ${data.emailNotifications ? "translate-x-6" : "translate-x-1"}`} />
         </button>
@@ -121,7 +137,7 @@ const NotificationsSettings = () => {
               </div>
               <button
                 onClick={() => handleLevelChange(level)}
-                className={`${toggleTrack} ${isActive ? "bg-blue-600" : "bg-slate-700"}`}
+                className={`${toggleTrack} ${isActive ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
               >
                 <span className={`${toggleCircle} ${isActive ? "translate-x-6" : "translate-x-1"}`} />
               </button>
@@ -131,17 +147,14 @@ const NotificationsSettings = () => {
       </div>
 
       {/* Digest Frequency */}
-      <div className="space-y-1.5">
-        <label className={labelClass}>Digest Frequency</label>
-        <div className="relative">
-          <Clock size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 z-10" />
-          <select value={data.digestFrequency} onChange={(e) => handleChange("digestFrequency", e.target.value)} className={selectClass + " pl-9"}>
-            <option value="realtime">Real-time</option>
-            <option value="hourly">Hourly</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-          </select>
-        </div>
+      <div>
+        <PopoverSelect
+          label="Digest Frequency"
+          icon={Clock}
+          value={data.digestFrequency}
+          onChange={(v) => handleChange("digestFrequency", v)}
+          options={digestOptions}
+        />
       </div>
 
       {/* Alert Categories */}
@@ -162,7 +175,7 @@ const NotificationsSettings = () => {
             </div>
             <button
               onClick={() => handleChange(category.key, !data[category.key])}
-              className={`${toggleTrack} ${data[category.key] ? "bg-blue-600" : "bg-slate-700"}`}
+              className={`${toggleTrack} ${data[category.key] ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
             >
               <span className={`${toggleCircle} ${data[category.key] ? "translate-x-6" : "translate-x-1"}`} />
             </button>

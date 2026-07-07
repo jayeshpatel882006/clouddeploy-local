@@ -61,7 +61,8 @@ const DeploymentTable = ({ deployments = [], search, selectedStatuses, onView, o
 
   return (
     <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950 shadow-sm">
-      <div className="overflow-x-auto">
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+        <div className="responsive-table min-w-[600px] sm:min-w-0">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-900/50">
@@ -118,6 +119,7 @@ const DeploymentTable = ({ deployments = [], search, selectedStatuses, onView, o
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Pagination */}

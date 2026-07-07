@@ -13,7 +13,7 @@ const EmptyState = ({ onCreateDeployment }) => (
     </p>
     <button
       onClick={onCreateDeployment}
-      className="mt-6 flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-blue-700 active:scale-[0.97]"
+      className="mt-6 flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-[var(--accent-hover)] active:scale-[0.97]"
     >
       <Rocket size={16} />
       Deploy Application

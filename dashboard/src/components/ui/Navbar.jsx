@@ -1,39 +1,65 @@
-import { Bell, Search, CircleUserRound } from "lucide-react";
+import { Bell, Search, CircleUserRound, Menu } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { useSettings } from "@/hooks/useSettings";
 
-const Navbar = () => {
+const pageTitles = {
+  "/": { title: "Dashboard", subtitle: "Manage your local cloud platform" },
+  "/deployments": { title: "Deployments", subtitle: "Manage and monitor your application deployments" },
+  "/clusters": { title: "Clusters", subtitle: "Kubernetes cluster resources and management" },
+  "/monitoring": { title: "Monitoring", subtitle: "Real-time cluster metrics and observability" },
+  "/logs": { title: "Logs", subtitle: "Centralized log aggregation and search" },
+  "/registry": { title: "Registry", subtitle: "Container image registry management" },
+  "/settings": { title: "Settings", subtitle: "Platform configuration and preferences" },
+};
+
+const Navbar = ({ onMenuToggle }) => {
+  const location = useLocation();
+  const { settings } = useSettings();
+  const page = pageTitles[location.pathname] || { title: "Dashboard", subtitle: "" };
+
   return (
     <header
-      className="flex h-16 items-center justify-between border-b border-slate-800 bg-slate-950 px-6"
+      className="flex h-16 items-center justify-between border-b border-slate-800 bg-slate-950 px-4 md:px-6"
       role="banner"
     >
       {/* Left */}
-      <div>
-        <h2 className="text-xl font-semibold text-white">Dashboard</h2>
-        <p className="text-xs text-slate-400">Manage your local cloud platform</p>
+      <div className="flex items-center gap-3 min-w-0">
+        {/* Mobile hamburger */}
+        <button
+          onClick={onMenuToggle}
+          className="rounded-lg border border-slate-700 p-2 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white md:hidden"
+          aria-label="Open menu"
+        >
+          <Menu size={18} />
+        </button>
+        <div className="min-w-0">
+          <h2 className="truncate text-xl font-semibold text-white">{page.title}</h2>
+          <p className="hidden truncate text-xs text-slate-400 sm:block">{page.subtitle}</p>
+        </div>
       </div>
 
       {/* Right */}
-      <nav className="flex items-center gap-4" aria-label="Top navigation">
+      <nav className="flex items-center gap-2 md:gap-4" aria-label="Top navigation">
         {/* Search */}
-        <div className="hidden items-center rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 transition-colors focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500/30 md:flex">
+        <div className="hidden items-center rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 transition-colors focus-within:border-[var(--accent)] focus-within:ring-1 focus-within:ring-[var(--accent)]/30 md:flex">
           <Search size={18} className="text-slate-400" aria-hidden="true" />
           <input
             type="text"
             placeholder="Search..."
             aria-label="Search the platform"
-            className="ml-2 w-48 bg-transparent text-sm text-white outline-none placeholder:text-slate-500"
+            className="ml-2 w-36 lg:w-48 bg-transparent text-sm text-white outline-none placeholder:text-slate-500"
           />
         </div>
 
         {/* Notification */}
         <button
-          className="rounded-lg border border-slate-700 p-2 text-slate-400 transition-all hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+          className="rounded-lg border border-slate-700 p-2 text-slate-400 transition-all hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/40"
           aria-label="View notifications"
         >
           <Bell size={18} />
         </button>
 
-        {/* System Status */}
+        {/* System Status - hidden on mobile/tablet */}
         <div
           className="hidden items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 lg:flex"
           role="status"
@@ -45,10 +71,10 @@ const Navbar = () => {
 
         {/* User */}
         <button
-          className="rounded-full border border-slate-700 p-1 text-slate-400 transition-all hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+          className="rounded-full border border-slate-700 p-1 text-slate-400 transition-all hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/40"
           aria-label="User menu"
         >
-          <CircleUserRound size={30} />
+          <CircleUserRound size={28} className="md:size-[30px]" />
         </button>
       </nav>
     </header>

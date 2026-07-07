@@ -17,7 +17,7 @@ const sections = [
 
 const SettingsSidebar = ({ activeSection, onSectionChange }) => {
   return (
-    <nav className="flex shrink-0 flex-col gap-1 rounded-xl border border-slate-800 bg-slate-950 p-2 shadow-sm md:w-48">
+    <nav className="settings-sidebar flex shrink-0 flex-col gap-1 rounded-xl border border-slate-800 bg-slate-950 p-2 shadow-sm md:w-48">
       {sections.map((section) => {
         const isActive = activeSection === section.id;
         const Icon = section.icon;
@@ -28,7 +28,7 @@ const SettingsSidebar = ({ activeSection, onSectionChange }) => {
             whileTap={{ scale: 0.97 }}
             className={`flex items-center gap-2.5 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-all ${
               isActive
-                ? "bg-blue-600 text-white shadow-sm"
+                ? "bg-[var(--accent)] text-white shadow-sm"
                 : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
             }`}
           >

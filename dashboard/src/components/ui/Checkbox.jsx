@@ -23,7 +23,7 @@ const Checkbox = forwardRef(
               peer-disabled:cursor-not-allowed peer-disabled:opacity-50
               ${error ? "border-red-500/50" : "border-slate-600"}
               ${props.checked
-                ? "bg-blue-600 border-blue-600"
+                ? "bg-[var(--accent)] border-[var(--accent)]"
                 : "bg-slate-800 hover:border-slate-500"
               }
             `.trim()}

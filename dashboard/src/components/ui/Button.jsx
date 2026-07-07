@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 
 const variantStyles = {
   primary:
-    "bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 focus-visible:ring-blue-500/40",
+    "bg-[var(--btn-primary-bg)] text-white hover:bg-[var(--btn-primary-hover)] active:bg-[var(--btn-primary-active)] focus-visible:ring-[var(--btn-primary-ring)]",
   secondary:
     "border border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700 active:bg-slate-600 focus-visible:ring-slate-500/40",
   ghost:

@@ -1,25 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Server, GitBranch, Globe, Clock, Shield, Box } from "lucide-react";
 import SettingsSection from "./SettingsSection";
-import { kubernetesDefaults } from "./settingsData";
+import { useSettings } from "@/hooks/useSettings";
+import PopoverSelect from "@/components/ui/PopoverSelect";
 
 const inputClass = "w-full rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-blue-600 focus:ring-1 focus:ring-blue-600/30";
 const labelClass = "block text-xs font-medium text-slate-400 mb-1.5";
 const toggleTrack = "relative inline-flex h-6 w-11 cursor-pointer items-center rounded-full transition-colors";
 const toggleCircle = "inline-block h-4 w-4 rounded-full bg-white shadow transition-transform";
 
-const namespaces = ["default", "production", "staging", "development", "kube-system", "monitoring"];
+const namespaceOptions = [
+  { value: "default", label: "default" },
+  { value: "production", label: "production" },
+  { value: "staging", label: "staging" },
+  { value: "development", label: "development" },
+  { value: "kube-system", label: "kube-system" },
+  { value: "monitoring", label: "monitoring" },
+];
 
 const KubernetesSettings = () => {
-  const [data, setData] = useState(kubernetesDefaults);
+  const { settings, updateSection } = useSettings();
+  const [data, setData] = useState({ ...settings.kubernetes });
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setData({ ...settings.kubernetes });
+  }, [settings.kubernetes]);
 
   const handleChange = (field, value) => setData((prev) => ({ ...prev, [field]: value }));
 
   const handleSave = () => {
+    updateSection("kubernetes", data);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
+
+  const hasChanges = JSON.stringify(data) !== JSON.stringify(settings.kubernetes);
 
   return (
     <SettingsSection
@@ -28,8 +44,9 @@ const KubernetesSettings = () => {
       headerRight={
         <button
           onClick={handleSave}
-          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] ${
-            saved ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+          disabled={!hasChanges}
+          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed ${
+            saved ? "bg-green-600" : "bg-[var(--accent)] hover:bg-[var(--accent-hover)]"
           }`}
         >
           {saved ? "Saved!" : "Save Changes"}
@@ -54,15 +71,13 @@ const KubernetesSettings = () => {
             <input type="text" value={data.contextName} onChange={(e) => handleChange("contextName", e.target.value)} className={inputClass + " pl-9"} />
           </div>
         </div>
-        <div className="space-y-1.5">
-          <label className={labelClass}>Default Namespace</label>
-          <div className="relative">
-            <Box size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-            <select value={data.defaultNamespace} onChange={(e) => handleChange("defaultNamespace", e.target.value)} className={inputClass + " pl-9 appearance-none cursor-pointer"}>
-              {namespaces.map((ns) => <option key={ns} value={ns}>{ns}</option>)}
-            </select>
-          </div>
-        </div>
+        <PopoverSelect
+          label="Default Namespace"
+          icon={Box}
+          value={data.defaultNamespace}
+          onChange={(v) => handleChange("defaultNamespace", v)}
+          options={namespaceOptions}
+        />
       </div>
 
       {/* Cluster Endpoint & Timeout */}
@@ -106,7 +121,7 @@ const KubernetesSettings = () => {
         </div>
         <button
           onClick={() => handleChange("enableAudit", !data.enableAudit)}
-          className={`${toggleTrack} ${data.enableAudit ? "bg-blue-600" : "bg-slate-700"}`}
+          className={`${toggleTrack} ${data.enableAudit ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
         >
           <span className={`${toggleCircle} ${data.enableAudit ? "translate-x-6" : "translate-x-1"}`} />
         </button>

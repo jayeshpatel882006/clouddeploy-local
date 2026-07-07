@@ -1,24 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Wrench, Clock, FolderOpen, Layout, Terminal, Upload } from "lucide-react";
 import SettingsSection from "./SettingsSection";
-import { flociDefaults } from "./settingsData";
+import { useSettings } from "@/hooks/useSettings";
+import PopoverSelect from "@/components/ui/PopoverSelect";
 
 const inputClass = "w-full rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-blue-600 focus:ring-1 focus:ring-blue-600/30";
 const labelClass = "block text-xs font-medium text-slate-400 mb-1.5";
-const selectClass = inputClass + " appearance-none cursor-pointer";
 const toggleTrack = "relative inline-flex h-6 w-11 cursor-pointer items-center rounded-full transition-colors";
 const toggleCircle = "inline-block h-4 w-4 rounded-full bg-white shadow transition-transform";
 
+const outputFormatOptions = [
+  { value: "json", label: "JSON" },
+  { value: "text", label: "Text" },
+  { value: "yaml", label: "YAML" },
+];
+
 const FlociSettings = () => {
-  const [data, setData] = useState(flociDefaults);
+  const { settings, updateSection } = useSettings();
+  const [data, setData] = useState({ ...settings.floci });
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setData({ ...settings.floci });
+  }, [settings.floci]);
 
   const handleChange = (field, value) => setData((prev) => ({ ...prev, [field]: value }));
 
   const handleSave = () => {
+    updateSection("floci", data);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
+
+  const hasChanges = JSON.stringify(data) !== JSON.stringify(settings.floci);
 
   return (
     <SettingsSection
@@ -27,8 +41,9 @@ const FlociSettings = () => {
       headerRight={
         <button
           onClick={handleSave}
-          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] ${
-            saved ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+          disabled={!hasChanges}
+          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed ${
+            saved ? "bg-green-600" : "bg-[var(--accent)] hover:bg-[var(--accent-hover)]"
           }`}
         >
           {saved ? "Saved!" : "Save Changes"}
@@ -75,12 +90,12 @@ const FlociSettings = () => {
           <input type="number" min="1" max="16" value={data.parallelBuilds} onChange={(e) => handleChange("parallelBuilds", e.target.value)} className={inputClass} />
         </div>
         <div className="space-y-1.5">
-          <label className={labelClass}>Output Format</label>
-          <select value={data.outputFormat} onChange={(e) => handleChange("outputFormat", e.target.value)} className={selectClass}>
-            <option value="json">JSON</option>
-            <option value="text">Text</option>
-            <option value="yaml">YAML</option>
-          </select>
+          <PopoverSelect
+            label="Output Format"
+            value={data.outputFormat}
+            onChange={(v) => handleChange("outputFormat", v)}
+            options={outputFormatOptions}
+          />
         </div>
       </div>
 
@@ -104,7 +119,7 @@ const FlociSettings = () => {
         </div>
         <button
           onClick={() => handleChange("cacheEnabled", !data.cacheEnabled)}
-          className={`${toggleTrack} ${data.cacheEnabled ? "bg-blue-600" : "bg-slate-700"}`}
+          className={`${toggleTrack} ${data.cacheEnabled ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
         >
           <span className={`${toggleCircle} ${data.cacheEnabled ? "translate-x-6" : "translate-x-1"}`} />
         </button>
@@ -120,7 +135,7 @@ const FlociSettings = () => {
         </div>
         <button
           onClick={() => handleChange("pushAfterBuild", !data.pushAfterBuild)}
-          className={`${toggleTrack} ${data.pushAfterBuild ? "bg-blue-600" : "bg-slate-700"}`}
+          className={`${toggleTrack} ${data.pushAfterBuild ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
         >
           <span className={`${toggleCircle} ${data.pushAfterBuild ? "translate-x-6" : "translate-x-1"}`} />
         </button>

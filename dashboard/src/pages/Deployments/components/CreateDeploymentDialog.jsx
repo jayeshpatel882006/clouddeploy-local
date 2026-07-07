@@ -63,8 +63,8 @@ const CreateDeploymentDialog = ({ isOpen, onClose, onCreate }) => {
               {/* Header */}
               <div className="flex items-center justify-between border-b border-slate-800 px-5 py-4">
                 <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-blue-600/10 p-2">
-                    <Rocket size={18} className="text-blue-400" />
+                  <div className="rounded-lg bg-[var(--accent-bg)] p-2">
+                    <Rocket size={18} className="text-[var(--accent)]" />
                   </div>
                   <h2 className="text-base font-semibold text-white">
                     New Deployment
@@ -81,8 +81,8 @@ const CreateDeploymentDialog = ({ isOpen, onClose, onCreate }) => {
 
               {/* Body */}
               <div className="space-y-5 px-5 py-5">
-                <div className="rounded-lg border border-blue-600/20 bg-blue-600/5 px-4 py-3">
-                  <p className="text-xs text-blue-300">
+                <div className="rounded-lg border-[var(--accent)]/20 bg-[var(--accent-bg)] px-4 py-3">
+                  <p className="text-xs" style={{color: 'var(--accent-light)'}}>
                     Deploy a public GitHub repository. The engine will clone,
                     build, and deploy it to your Kubernetes cluster.
                   </p>
@@ -144,7 +144,7 @@ const CreateDeploymentDialog = ({ isOpen, onClose, onCreate }) => {
                 <button
                   onClick={handleSubmit}
                   disabled={submitting}
-                  className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white transition-all hover:bg-blue-700 active:scale-[0.97] disabled:opacity-40"
+                  className="flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2 text-sm font-medium text-white transition-all hover:bg-[var(--accent-hover)] active:scale-[0.97] disabled:opacity-40"
                 >
                   {submitting ? (
                     <>

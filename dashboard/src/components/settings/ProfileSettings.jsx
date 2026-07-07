@@ -1,22 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User, Mail, MessageSquare, Key, Plus, Trash2, Copy, Check } from "lucide-react";
 import SettingsSection from "./SettingsSection";
-import { profileDefaults } from "./settingsData";
+import { useSettings } from "@/hooks/useSettings";
 
 const inputClass = "w-full rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-blue-600 focus:ring-1 focus:ring-blue-600/30";
 const labelClass = "block text-xs font-medium text-slate-400 mb-1.5";
 
 const ProfileSettings = () => {
-  const [data, setData] = useState(profileDefaults);
+  const { settings, updateSection } = useSettings();
+  const [data, setData] = useState({ ...settings.profile });
   const [saved, setSaved] = useState(false);
   const [copiedToken, setCopiedToken] = useState(null);
+
+  useEffect(() => {
+    setData({ ...settings.profile });
+  }, [settings.profile]);
 
   const handleChange = (field, value) => setData((prev) => ({ ...prev, [field]: value }));
 
   const handleSave = () => {
+    updateSection("profile", data);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
+
+  const hasChanges = JSON.stringify(data) !== JSON.stringify(settings.profile);
 
   const copyToken = (token) => {
     navigator.clipboard?.writeText(token);
@@ -31,7 +39,8 @@ const ProfileSettings = () => {
       headerRight={
         <button
           onClick={handleSave}
-          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] ${
+          disabled={!hasChanges}
+          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed ${
             saved ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
           }`}
         >
@@ -47,7 +56,7 @@ const ProfileSettings = () => {
         <div>
           <p className="text-sm font-medium text-slate-200">{data.name}</p>
           <p className="text-xs text-slate-500">{data.email}</p>
-          <button className="mt-1 text-xs text-blue-400 hover:text-blue-300 transition-colors">Change avatar</button>
+          <button className="mt-1 text-xs text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors">Change avatar</button>
         </div>
       </div>
 

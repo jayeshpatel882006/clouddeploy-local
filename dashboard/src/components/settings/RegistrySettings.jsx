@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Globe, Lock, FolderOpen, Shield, Clock, Eye } from "lucide-react";
 import SettingsSection from "./SettingsSection";
-import { registryDefaults } from "./settingsData";
+import { useSettings } from "@/hooks/useSettings";
 
 const inputClass = "w-full rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-blue-600 focus:ring-1 focus:ring-blue-600/30";
 const labelClass = "block text-xs font-medium text-slate-400 mb-1.5";
@@ -9,15 +9,23 @@ const toggleTrack = "relative inline-flex h-6 w-11 cursor-pointer items-center r
 const toggleCircle = "inline-block h-4 w-4 rounded-full bg-white shadow transition-transform";
 
 const RegistrySettings = () => {
-  const [data, setData] = useState(registryDefaults);
+  const { settings, updateSection } = useSettings();
+  const [data, setData] = useState({ ...settings.registry });
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setData({ ...settings.registry });
+  }, [settings.registry]);
 
   const handleChange = (field, value) => setData((prev) => ({ ...prev, [field]: value }));
 
   const handleSave = () => {
+    updateSection("registry", data);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
+
+  const hasChanges = JSON.stringify(data) !== JSON.stringify(settings.registry);
 
   return (
     <SettingsSection
@@ -26,8 +34,9 @@ const RegistrySettings = () => {
       headerRight={
         <button
           onClick={handleSave}
-          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] ${
-            saved ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+          disabled={!hasChanges}
+          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed ${
+            saved ? "bg-green-600" : "bg-[var(--accent)] hover:bg-[var(--accent-hover)]"
           }`}
         >
           {saved ? "Saved!" : "Save Changes"}
@@ -67,7 +76,7 @@ const RegistrySettings = () => {
         </div>
         <button
           onClick={() => handleChange("authEnabled", !data.authEnabled)}
-          className={`${toggleTrack} ${data.authEnabled ? "bg-blue-600" : "bg-slate-700"}`}
+          className={`${toggleTrack} ${data.authEnabled ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
         >
           <span className={`${toggleCircle} ${data.authEnabled ? "translate-x-6" : "translate-x-1"}`} />
         </button>
@@ -93,7 +102,7 @@ const RegistrySettings = () => {
         </div>
         <button
           onClick={() => handleChange("tlsEnabled", !data.tlsEnabled)}
-          className={`${toggleTrack} ${data.tlsEnabled ? "bg-blue-600" : "bg-slate-700"}`}
+          className={`${toggleTrack} ${data.tlsEnabled ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
         >
           <span className={`${toggleCircle} ${data.tlsEnabled ? "translate-x-6" : "translate-x-1"}`} />
         </button>
@@ -138,7 +147,7 @@ const RegistrySettings = () => {
         </div>
         <button
           onClick={() => handleChange("readOnly", !data.readOnly)}
-          className={`${toggleTrack} ${data.readOnly ? "bg-blue-600" : "bg-slate-700"}`}
+          className={`${toggleTrack} ${data.readOnly ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
         >
           <span className={`${toggleCircle} ${data.readOnly ? "translate-x-6" : "translate-x-1"}`} />
         </button>

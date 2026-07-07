@@ -1,41 +1,96 @@
-import { useState } from "react";
-import { Settings, Globe, Clock, RefreshCw, Activity } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Settings, Globe, Clock, RefreshCw, Activity, RotateCcw } from "lucide-react";
 import SettingsSection from "./SettingsSection";
-import { generalDefaults } from "./settingsData";
+import { useSettings } from "@/hooks/useSettings";
+import PopoverSelect from "@/components/ui/PopoverSelect";
 
-const timezones = ["UTC", "America/New_York", "America/Chicago", "America/Los_Angeles", "Europe/London", "Europe/Berlin", "Asia/Tokyo", "Asia/Kolkata", "Australia/Sydney"];
-const languages = ["en-US", "en-GB", "de-DE", "fr-FR", "ja-JP", "zh-CN", "hi-IN"];
+const timezoneOptions = [
+  { value: "UTC", label: "UTC" },
+  { value: "America/New_York", label: "America/New_York" },
+  { value: "America/Chicago", label: "America/Chicago" },
+  { value: "America/Los_Angeles", label: "America/Los_Angeles" },
+  { value: "Europe/London", label: "Europe/London" },
+  { value: "Europe/Berlin", label: "Europe/Berlin" },
+  { value: "Asia/Tokyo", label: "Asia/Tokyo" },
+  { value: "Asia/Kolkata", label: "Asia/Kolkata" },
+  { value: "Australia/Sydney", label: "Australia/Sydney" },
+];
+
+const languageOptions = [
+  { value: "en-US", label: "English (US)" },
+  { value: "en-GB", label: "English (UK)" },
+  { value: "de-DE", label: "German" },
+  { value: "fr-FR", label: "French" },
+  { value: "ja-JP", label: "Japanese" },
+  { value: "zh-CN", label: "Chinese" },
+  { value: "hi-IN", label: "Hindi" },
+];
 
 const inputClass = "w-full rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-blue-600 focus:ring-1 focus:ring-blue-600/30";
 const labelClass = "block text-xs font-medium text-slate-400 mb-1.5";
-const selectClass = inputClass + " appearance-none cursor-pointer";
 const toggleTrack = "relative inline-flex h-6 w-11 cursor-pointer items-center rounded-full transition-colors focus:outline-none";
 const toggleCircle = "inline-block h-4 w-4 rounded-full bg-white shadow transition-transform";
 
 const GeneralSettings = () => {
-  const [data, setData] = useState(generalDefaults);
+  const { settings, updateSettings, reset } = useSettings();
+  const [local, setLocal] = useState({ ...settings });
   const [saved, setSaved] = useState(false);
 
-  const handleChange = (field, value) => setData((prev) => ({ ...prev, [field]: value }));
+  useEffect(() => {
+    setLocal({ ...settings });
+  }, [settings]);
+
+  const handleChange = (field, value) => {
+    setLocal((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSave = () => {
+    updateSettings({
+      platformName: local.platformName,
+      timezone: local.timezone,
+      language: local.language,
+      autoRefreshInterval: local.autoRefreshInterval,
+      telemetryEnabled: local.telemetryEnabled,
+    });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
+
+  const handleReset = () => {
+    reset();
+    setSaved(false);
+  };
+
+  const hasChanges = local.platformName !== settings.platformName ||
+    local.timezone !== settings.timezone ||
+    local.language !== settings.language ||
+    local.autoRefreshInterval !== settings.autoRefreshInterval ||
+    local.telemetryEnabled !== settings.telemetryEnabled;
 
   return (
     <SettingsSection
       title="General Settings"
       subtitle="Configure platform-wide preferences"
       headerRight={
-        <button
-          onClick={handleSave}
-          className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] ${
-            saved ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
-          }`}
-        >
-          {saved ? "Saved!" : "Save Changes"}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-1.5 rounded-lg border border-slate-700 px-3 py-2 text-sm text-slate-400 transition-all hover:border-slate-600 hover:text-white"
+            title="Reset to defaults"
+          >
+            <RotateCcw size={14} />
+            <span className="hidden sm:inline">Reset to Defaults</span>
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={!hasChanges}
+            className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-all active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed ${
+              saved ? "bg-green-600" : "bg-[var(--accent)] hover:bg-[var(--accent-hover)]"
+            }`}
+          >
+            {saved ? "Saved!" : "Save Changes"}
+          </button>
+        </div>
       }
     >
       {/* Platform Name */}
@@ -45,7 +100,7 @@ const GeneralSettings = () => {
           <Settings size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
-            value={data.platformName}
+            value={local.platformName}
             onChange={(e) => handleChange("platformName", e.target.value)}
             className={inputClass + " pl-9"}
           />
@@ -54,32 +109,21 @@ const GeneralSettings = () => {
 
       {/* Timezone & Language */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-1.5">
-          <label className={labelClass}>Timezone</label>
-          <div className="relative">
-            <Globe size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-            <select
-              value={data.timezone}
-              onChange={(e) => handleChange("timezone", e.target.value)}
-              className={selectClass + " pl-9"}
-            >
-              {timezones.map((tz) => <option key={tz} value={tz}>{tz}</option>)}
-            </select>
-          </div>
-        </div>
-        <div className="space-y-1.5">
-          <label className={labelClass}>Language</label>
-          <div className="relative">
-            <Globe size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-            <select
-              value={data.language}
-              onChange={(e) => handleChange("language", e.target.value)}
-              className={selectClass + " pl-9"}
-            >
-              {languages.map((lang) => <option key={lang} value={lang}>{lang}</option>)}
-            </select>
-          </div>
-        </div>
+        <PopoverSelect
+          label="Timezone"
+          icon={Globe}
+          value={local.timezone}
+          onChange={(v) => handleChange("timezone", v)}
+          options={timezoneOptions}
+          searchable={true}
+        />
+        <PopoverSelect
+          label="Language"
+          icon={Globe}
+          value={local.language}
+          onChange={(v) => handleChange("language", v)}
+          options={languageOptions}
+        />
       </div>
 
       {/* Auto-refresh Interval */}
@@ -91,7 +135,7 @@ const GeneralSettings = () => {
             type="number"
             min="5"
             max="300"
-            value={data.autoRefreshInterval}
+            value={local.autoRefreshInterval}
             onChange={(e) => handleChange("autoRefreshInterval", e.target.value)}
             className={inputClass + " pl-9"}
           />
@@ -108,10 +152,10 @@ const GeneralSettings = () => {
           </div>
         </div>
         <button
-          onClick={() => handleChange("telemetryEnabled", !data.telemetryEnabled)}
-          className={`${toggleTrack} ${data.telemetryEnabled ? "bg-blue-600" : "bg-slate-700"}`}
+          onClick={() => handleChange("telemetryEnabled", !local.telemetryEnabled)}
+          className={`${toggleTrack} ${local.telemetryEnabled ? "bg-[var(--toggle-active)]" : "bg-slate-700"}`}
         >
-          <span className={`${toggleCircle} ${data.telemetryEnabled ? "translate-x-6" : "translate-x-1"}`} />
+          <span className={`${toggleCircle} ${local.telemetryEnabled ? "translate-x-6" : "translate-x-1"}`} />
         </button>
       </div>
     </SettingsSection>

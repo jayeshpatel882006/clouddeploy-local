@@ -28,7 +28,7 @@ const Pagination = ({
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
   const btnBase =
-    "flex h-8 w-8 items-center justify-center rounded-lg text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40";
+    "flex h-8 w-8 items-center justify-center rounded-lg text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)]";
 
   return (
     <div

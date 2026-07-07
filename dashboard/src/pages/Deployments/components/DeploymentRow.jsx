@@ -23,14 +23,14 @@ const DeploymentRow = memo(({ deployment, onView, onDelete }) => {
       onClick={() => onView?.(deployment)}
     >
       {/* Project Name */}
-      <td className="py-3.5 pr-3">
+      <td className="py-3.5 pr-3" data-label="Project">
         <span className="block truncate font-medium text-slate-200" title={deployment.name}>
           {deployment.name || "—"}
         </span>
       </td>
 
       {/* Repository */}
-      <td className="py-3.5 pr-3">
+      <td className="py-3.5 pr-3" data-label="Repository">
         <div className="flex items-center gap-1.5 min-w-0">
           <ExternalLink size={12} className="shrink-0 text-slate-600" />
           <span
@@ -43,7 +43,7 @@ const DeploymentRow = memo(({ deployment, onView, onDelete }) => {
       </td>
 
       {/* Branch */}
-      <td className="py-3.5 pr-3">
+      <td className="py-3.5 pr-3" data-label="Branch">
         <div className="flex items-center gap-1">
           <GitBranch size={12} className="shrink-0 text-slate-500" />
           <span className="text-xs text-slate-300">{deployment.branch || "—"}</span>
@@ -51,12 +51,12 @@ const DeploymentRow = memo(({ deployment, onView, onDelete }) => {
       </td>
 
       {/* Status */}
-      <td className="py-3.5 pr-3">
+      <td className="py-3.5 pr-3" data-label="Status">
         <DeploymentStatusBadge status={deployment.status} />
       </td>
 
       {/* Preview */}
-      <td className="py-3.5 pr-3">
+      <td className="py-3.5 pr-3" data-label="Preview">
         {hasPreview ? (
           <a
             href={deployment.previewUrl}
@@ -74,21 +74,21 @@ const DeploymentRow = memo(({ deployment, onView, onDelete }) => {
       </td>
 
       {/* Created */}
-      <td className="whitespace-nowrap py-3.5 pr-3">
+      <td className="whitespace-nowrap py-3.5 pr-3" data-label="Created">
         <span className="text-xs text-slate-400">
           {deployment.createdAtFormatted || "—"}
         </span>
       </td>
 
       {/* Updated */}
-      <td className="whitespace-nowrap py-3.5 pr-3">
+      <td className="whitespace-nowrap py-3.5 pr-3" data-label="Updated">
         <span className="text-xs text-slate-400">
           {deployment.updatedAtFormatted || "—"}
         </span>
       </td>
 
       {/* Actions */}
-      <td className="py-3.5 pr-4">
+      <td className="py-3.5 pr-4 actions-cell" data-label="">
         <div className="flex items-center gap-0.5" onClick={(e) => e.stopPropagation()}>
           <button
             onClick={() => onView?.(deployment)}
