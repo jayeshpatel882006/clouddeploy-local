@@ -58,6 +58,7 @@ import { generateImageTag } from "../utils/imageTag.js";
 import { createDeploymentMetadata } from "../deployment/deploymentMetadata.service.js";
 import { generateServiceManifest } from "../kubernetes/serviceManifest.service.js";
 import { deployManifest } from "../kubernetes/kubernetes.deploy.js";
+import { waitForDeployment } from "../kubernetes/kubernetes.wait.js";
 
 export const deploymentService = async (deployment) => {
   // ==========================================================
@@ -157,12 +158,15 @@ export const deploymentService = async (deployment) => {
     });
     const kubernetesService = await deployManifest(serviceManifest);
 
+    const deploymentStatus = await waitForDeployment(imageName);
+
     // ==========================================================
     // SUCCESS RESPONSE
     // ==========================================================
     return {
       success: true,
-      status: "READY_FOR_DEPLOYMENT",
+      status: deploymentStatus.status,
+      deploymentStatus,
 
       project,
       repository: clonedRepository,
