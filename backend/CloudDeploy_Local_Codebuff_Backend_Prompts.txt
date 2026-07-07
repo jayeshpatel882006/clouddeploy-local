@@ -1,0 +1,171 @@
+CloudDeploy Local - Codebuff Backend Automation Prompts
+
+IMPORTANT RULES
+
+You are a Senior Backend Engineer, DevOps Engineer, and Cloud Architect.
+
+Before writing any code: 1. Read and understand the existing backend
+codebase. 2. Preserve the existing architecture. 3. Never rewrite
+working code. 4. Never rename files unless necessary. 5. Extend the
+project incrementally. 6. Follow the existing coding style. 7. Use ES
+Modules. 8. Use Express + MongoDB Atlas + Mongoose. 9. Keep Controllers
+thin. 10. Put business logic in Services. 11. Keep Kubernetes/Docker
+logic inside the Deployment Engine. 12. After completing EACH phase: -
+git add ./backend - Commit using an appropriate Conventional Commit
+message. 13. Stop after completing the requested phase.
+
+------------------------------------------------------------------------
+
+PHASE 1 — Backend Architecture Audit
+
+Read the entire backend project.
+
+Understand: - Folder structure - Routes - Controllers - Services -
+Models - Deployment Engine - Config - Middleware
+
+Do NOT change functionality.
+
+Return: - Architecture review - Safe improvements only
+
+Commit: git add ./backend
+git commit -m "refactor(api): improve backend architecture"
+
+------------------------------------------------------------------------
+
+PHASE 2 — API Foundation
+
+Implement: - Global Error Handler - asyncHandler - ApiResponse -
+ApiError - Logger - Validation middleware - 404 middleware
+
+Refactor existing endpoints to use them.
+
+Commit: git add ./backend
+git commit -m "feat(api): add global error handling and response utilities"
+
+------------------------------------------------------------------------
+
+PHASE 3 — Deployment Module
+
+Implement: - Create Deployment - Get Deployments - Get Deployment by
+ID - Update Deployment - Delete Deployment - Search - Pagination -
+Filtering - Validation
+
+Use MongoDB Atlas.
+
+Do NOT integrate Kubernetes yet.
+
+Commit: git add ./backend
+git commit -m "feat(deployments): complete deployment CRUD module"
+
+------------------------------------------------------------------------
+
+PHASE 4 — Deployment Engine
+
+Expand deployment.engine.js.
+
+Add placeholders for: - Build Image - Push Image - Generate Deployment
+Manifest - Generate Service Manifest - Deploy to Kubernetes - Scale
+Deployment - Restart Deployment - Rollback Deployment - Delete
+Deployment
+
+Design only. Do not execute Kubernetes.
+
+Commit: git add ./backend
+git commit -m "feat(engine): expand deployment engine architecture"
+
+------------------------------------------------------------------------
+
+PHASE 5 — Kubernetes Integration
+
+Use @kubernetes/client-node.
+
+Implement: - List Pods - List Deployments - List Services - Create
+Deployment - Delete Deployment - Scale Deployment
+
+Keep Kubernetes logic inside engine/.
+
+Commit: git add ./backend
+git commit -m "feat(kubernetes): integrate kubernetes client"
+
+------------------------------------------------------------------------
+
+PHASE 6 — Docker Integration
+
+Implement: - Build Image - Tag Image - Push Image - Pull Image - Delete
+Image - List Images
+
+Commit: git add ./backend
+git commit -m "feat(docker): integrate docker engine"
+
+------------------------------------------------------------------------
+
+PHASE 7 — Registry
+
+Implement Registry APIs: - List Images - Tags - Delete - Search
+
+Support Local Docker Registry.
+
+Commit: git add ./backend
+git commit -m "feat(registry): implement registry management"
+
+------------------------------------------------------------------------
+
+PHASE 8 — Monitoring
+
+Prepare services for: - Prometheus - Grafana - Node Exporter - cAdvisor
+
+Expose REST APIs.
+
+Commit: git add ./backend
+git commit -m "feat(monitoring): implement monitoring module"
+
+------------------------------------------------------------------------
+
+PHASE 9 — Logging
+
+Prepare integration for: - Loki - Promtail
+
+Support: - List Logs - Search - Filter
+
+Commit: git add ./backend
+git commit -m "feat(logging): implement logging module"
+
+------------------------------------------------------------------------
+
+PHASE 10 — Floci
+
+Implement REST APIs for: - S3 - Lambda - IAM - SNS - SQS
+
+Commit: git add ./backend
+git commit -m "feat(floci): integrate floci services"
+
+------------------------------------------------------------------------
+
+PHASE 11 — Authentication
+
+Implement: - JWT - Login - Register - Refresh Token - RBAC
+
+Commit: git add ./backend
+git commit -m "feat(auth): implement authentication"
+
+------------------------------------------------------------------------
+
+PHASE 12 — Production Readiness
+
+Add: - Rate Limiting - Security Headers - Request Logging - API
+Documentation - Health Checks - Readiness Checks - Graceful Shutdown -
+Environment Validation
+
+Commit: git add ./backend
+git commit -m "chore(api): production hardening"
+
+------------------------------------------------------------------------
+
+FINAL RULES
+
+-   Complete ONLY one phase.
+-   Never continue automatically.
+-   Wait for my confirmation.
+-   Ensure the project runs before finishing.
+-   Fix build or lint errors.
+-   Commit all changes.

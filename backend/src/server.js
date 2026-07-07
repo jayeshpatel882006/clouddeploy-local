@@ -7,16 +7,15 @@ dotenv.config();
 
 /* ─── Environment Validation ─────────────────── */
 
-const REQUIRED_ENV_VARS = [
-  "MONGODB_URI",
-  "JWT_SECRET",
-];
+const REQUIRED_ENV_VARS = ["MONGODB_URI", "JWT_SECRET"];
 
 const validateEnvironment = () => {
   const missing = REQUIRED_ENV_VARS.filter((v) => !process.env[v]);
 
   if (missing.length > 0) {
-    logger.warn(`Missing required environment variables: ${missing.join(", ")}`);
+    logger.warn(
+      `Missing required environment variables: ${missing.join(", ")}`,
+    );
 
     if (process.env.NODE_ENV === "production") {
       process.exit(1);
@@ -28,7 +27,7 @@ const validateEnvironment = () => {
 
 /* ─── Server Start ───────────────────────────── */
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 let server;
 
 const startServer = async () => {
@@ -63,7 +62,10 @@ process.on("SIGTERM", () => shutdown("SIGTERM"));
 process.on("SIGINT", () => shutdown("SIGINT"));
 
 process.on("uncaughtException", (err) => {
-  logger.error("Uncaught exception", { message: err.message, stack: err.stack });
+  logger.error("Uncaught exception", {
+    message: err.message,
+    stack: err.stack,
+  });
   process.exit(1);
 });
 
