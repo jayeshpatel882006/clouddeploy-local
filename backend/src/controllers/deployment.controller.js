@@ -56,13 +56,11 @@ export const createDeployment = async (req, res, next) => {
 
     const deployment = await registerRepository(repositoryUrl, branch);
 
-    res.status(201).json({
+    // Return immediately
+    res.status(202).json({
       success: true,
-      message: "Repository registered successfully",
-      data: {
-        deployment: deployment.deployment,
-        engine: deployment.deploymentResult,
-      },
+      message: "Deployment queued successfully.",
+      data: deployment,
     });
   } catch (error) {
     next(error);

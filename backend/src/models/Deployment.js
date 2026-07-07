@@ -13,15 +13,16 @@ const deploymentSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "REGISTERED",
       enum: [
         "REGISTERED",
-        "CLONED",
+        "CLONING",
         "BUILDING",
+        "PUSHING",
         "DEPLOYING",
         "RUNNING",
         "FAILED",
       ],
+      default: "REGISTERED",
     },
   },
   {

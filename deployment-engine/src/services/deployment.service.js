@@ -61,7 +61,7 @@ import { deployManifest } from "../kubernetes/kubernetes.deploy.js";
 import { waitForDeployment } from "../kubernetes/kubernetes.wait.js";
 import { cleanupDeployment } from "../cleanup/cleanup.service.js";
 
-export const deploymentService = async (deployment) => {
+export const deploymentService = async (deployment, onProgress = () => {}) => {
   // ==========================================================
   // STEP 1 : Clone Repository
   // ==========================================================
@@ -69,6 +69,7 @@ export const deploymentService = async (deployment) => {
     deployment.repositoryUrl,
     deployment.branch,
   );
+  await onProgress("CLONING");
 
   try {
     // ==========================================================
@@ -110,6 +111,7 @@ export const deploymentService = async (deployment) => {
       imageName,
       imageTag,
     );
+    await onProgress("BUILDING");
 
     // ==========================================================
     // STEP 7 : Run Docker Container (Paused)
@@ -136,6 +138,7 @@ export const deploymentService = async (deployment) => {
     // STEP 9 : Push Image to Local Registry
     // ==========================================================
     const pushedImage = await pushDockerImage(imageName, imageTag);
+    await onProgress("PUSHING");
 
     // ==========================================================
     // STEP 10 : Generate Kubernetes Deployment Manifest
@@ -157,6 +160,7 @@ export const deploymentService = async (deployment) => {
       containerPort: 3000,
       servicePort: 80,
     });
+    await onProgress("DEPLOYING");
     const kubernetesService = await deployManifest(serviceManifest);
 
     const deploymentStatus = await waitForDeployment(imageName);
@@ -171,6 +175,7 @@ export const deploymentService = async (deployment) => {
     // ==========================================================
     // SUCCESS RESPONSE
     // ==========================================================
+    await onProgress("RUNNING");
     return {
       success: true,
       status: deploymentStatus.status,
@@ -196,6 +201,7 @@ export const deploymentService = async (deployment) => {
       cleanup,
     };
   } catch (error) {
+    await onProgress("FAILED");
     throw {
       success: false,
 

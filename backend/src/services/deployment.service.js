@@ -132,30 +132,60 @@ export const registerRepository = async (repositoryUrl, branch = "main") => {
     branch,
     status: "REGISTERED",
   });
-  const deploymentResult = await triggerDeployment({
-    repositoryUrl: deployment.repositoryUrl,
-    branch: deployment.branch,
-  });
-  await saveDeploymentHistory({
-    repositoryUrl: deployment.repositoryUrl,
 
-    projectName: deploymentResult.project.projectName,
-
-    image: deploymentResult.registry.image,
-
-    deploymentName: deploymentResult.project.projectName,
-
-    serviceName: deploymentResult.project.projectName,
-
-    previewUrl: deploymentResult.previewUrl,
-
-    status: deploymentResult.status,
+  // Process deployment in the background
+  setImmediate(() => {
+    processDeployment(deployment);
   });
 
   return {
     deployment,
-    deploymentResult,
   };
+};
+
+export const processDeployment = async (deployment) => {
+  try {
+    // ==========================================
+    // CLONING
+    // ==========================================
+    deployment.status = "CLONING";
+    await deployment.save();
+
+    const result = await triggerDeployment({
+      repositoryUrl: deployment.repositoryUrl,
+      branch: deployment.branch,
+    });
+
+    // ==========================================
+    // DEPLOYMENT COMPLETED
+    // ==========================================
+    deployment.projectName = result.project.projectName;
+    deployment.image = result.registry.image;
+    deployment.deploymentName = result.project.projectName;
+    deployment.serviceName = result.project.projectName;
+    deployment.previewUrl = result.previewUrl;
+    deployment.status = "RUNNING";
+
+    await deployment.save();
+
+    // ==========================================
+    // SAVE DEPLOYMENT HISTORY
+    // ==========================================
+    await saveDeploymentHistory({
+      repositoryUrl: deployment.repositoryUrl,
+      projectName: result.project.projectName,
+      image: result.registry.image,
+      deploymentName: result.project.projectName,
+      serviceName: result.project.projectName,
+      previewUrl: result.previewUrl,
+      status: "RUNNING",
+    });
+  } catch (error) {
+    deployment.status = "FAILED";
+    deployment.error = error.message;
+
+    await deployment.save();
+  }
 };
 
 export const saveDeploymentHistory = async (deployment) => {
