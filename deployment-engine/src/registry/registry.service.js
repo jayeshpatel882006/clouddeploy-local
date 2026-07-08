@@ -1,4 +1,5 @@
 import axios from "axios";
+import { inspectImage } from "./registry.inspect.js";
 
 const REGISTRY_URL = process.env.REGISTRY_URL || "http://localhost:5000";
 
@@ -8,7 +9,9 @@ export const getRegistryRepositories = async () => {
   const repositories = data.repositories || [];
 
   const registry = await Promise.all(
-    repositories.map((repo) => getRepositoryTags(repo)),
+    repositories.map(async (repository) => {
+      return await getRepositoryTags(repository);
+    }),
   );
 
   return registry;
@@ -19,8 +22,22 @@ export const getRepositoryTags = async (repository) => {
     `${REGISTRY_URL}/v2/${repository}/tags/list`,
   );
 
+  const tags = data.tags || [];
+
+  const images = await Promise.all(
+    tags.map(async (tag) => {
+      const metadata = await inspectImage(repository, tag);
+
+      return {
+        repository,
+        tag,
+        ...metadata,
+      };
+    }),
+  );
+
   return {
-    repository: data.name,
-    tags: data.tags || [],
+    repository,
+    images,
   };
 };
