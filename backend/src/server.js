@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import app from "./app.js";
 import connectDB from "./config/database.js";
 import logger from "./utils/logger.js";
+import { startHealthMonitor } from "./monitor/health.monitor.js";
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ const validateEnvironment = () => {
 };
 
 /* ─── Server Start ───────────────────────────── */
-
+startHealthMonitor();
 const PORT = process.env.PORT || 5001;
 let server;
 

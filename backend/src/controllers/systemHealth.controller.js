@@ -1,14 +1,8 @@
-import { getSystemHealth } from "../services/systemHealth.service.js";
+import { systemHealth } from "../monitor/health.cache.js";
 
-export const getSystemHealthController = async (req, res, next) => {
-  try {
-    const health = await getSystemHealth();
-
-    res.json({
-      success: true,
-      ...health,
-    });
-  } catch (error) {
-    next(error);
-  }
+export const getSystemHealth = (req, res) => {
+  res.json({
+    success: true,
+    health: systemHealth,
+  });
 };
