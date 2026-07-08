@@ -24,7 +24,7 @@ const DashboardLayout = ({ children }) => {
   const isRight = settings.sidebarPosition === "right";
 
   return (
-    <div className="flex h-screen bg-slate-900 text-white">
+    <div className="flex h-screen text-white" style={{ background: "var(--bg-secondary)" }}>
       {/* Mobile hamburger */}
       {isMobile && (
         <button
@@ -65,7 +65,7 @@ const DashboardLayout = ({ children }) => {
       <div className="main-wrapper flex flex-1 flex-col overflow-hidden">
         <Navbar onMenuToggle={() => setSidebarOpen(true)} />
 
-        <main className="flex-1 overflow-y-auto bg-slate-900 p-4 md:p-6">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6" style={{ background: "var(--bg-primary)" }}>
           {children}
         </main>
       </div>

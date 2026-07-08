@@ -43,7 +43,7 @@ const Switch = forwardRef(
             className={`
               ${sizes.track} relative inline-flex shrink-0 cursor-pointer items-center rounded-full
               transition-colors duration-200
-              peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500/40 peer-focus-visible:ring-offset-1 peer-focus-visible:ring-offset-slate-900
+              peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--accent-ring)] peer-focus-visible:ring-offset-1 peer-focus-visible:ring-offset-slate-900
               ${checked ? "bg-[var(--toggle-active)]" : "bg-slate-700"}
             `.trim()}
             aria-hidden="true"

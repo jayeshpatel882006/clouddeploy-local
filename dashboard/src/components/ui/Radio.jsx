@@ -17,14 +17,14 @@ const Radio = forwardRef(({ label, className = "", id, ...props }, ref) => {
           className={`
             flex h-4 w-4 shrink-0 items-center justify-center rounded-full
             border transition-colors
-            peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500/40 peer-focus-visible:ring-offset-1 peer-focus-visible:ring-offset-slate-900
+            peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--accent-ring)] peer-focus-visible:ring-offset-1 peer-focus-visible:ring-offset-slate-900
             peer-disabled:cursor-not-allowed peer-disabled:opacity-50
-            ${props.checked ? "border-blue-600" : "border-slate-600 bg-slate-800 hover:border-slate-500"}
+            ${props.checked ? "border-[var(--accent)]" : "border-slate-600 bg-slate-800 hover:border-slate-500"}
           `.trim()}
           aria-hidden="true"
         >
           {props.checked && (
-            <div className="h-2 w-2 rounded-full bg-blue-600" />
+            <div className="h-2 w-2 rounded-full bg-[var(--accent)]" />
           )}
         </div>
       </div>

@@ -1,13 +1,13 @@
 import { useState, useMemo } from "react";
 
 const colorMap = {
-  blue: { stroke: "#60a5fa", fill: "rgba(96,165,250,0.1)", dot: "#3b82f6" },
-  green: { stroke: "#4ade80", fill: "rgba(74,222,128,0.1)", dot: "#22c55e" },
-  purple: { stroke: "#c084fc", fill: "rgba(192,132,252,0.1)", dot: "#a855f7" },
-  yellow: { stroke: "#facc15", fill: "rgba(250,204,21,0.08)", dot: "#eab308" },
-  cyan: { stroke: "#22d3ee", fill: "rgba(34,211,238,0.1)", dot: "#06b6d4" },
-  red: { stroke: "#f87171", fill: "rgba(248,113,113,0.1)", dot: "#ef4444" },
-  orange: { stroke: "#fb923c", fill: "rgba(251,146,60,0.1)", dot: "#f97316" },
+  blue: { stroke: "var(--chart-1)", fill: "var(--chart-1-soft)", dot: "var(--chart-1)" },
+  green: { stroke: "var(--chart-2)", fill: "rgba(74,222,128,0.1)", dot: "var(--chart-2)" },
+  purple: { stroke: "var(--chart-3)", fill: "rgba(192,132,252,0.1)", dot: "var(--chart-3)" },
+  yellow: { stroke: "var(--chart-4)", fill: "rgba(250,204,21,0.08)", dot: "var(--chart-4)" },
+  cyan: { stroke: "var(--chart-5)", fill: "rgba(34,211,238,0.1)", dot: "var(--chart-5)" },
+  red: { stroke: "var(--chart-7)", fill: "rgba(248,113,113,0.1)", dot: "var(--chart-7)" },
+  orange: { stroke: "var(--chart-6)", fill: "rgba(251,146,60,0.1)", dot: "var(--chart-6)" },
 };
 
 const TimeSeriesChart = ({

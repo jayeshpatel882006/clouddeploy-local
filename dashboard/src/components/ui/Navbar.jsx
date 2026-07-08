@@ -1,6 +1,9 @@
-import { Bell, Search, CircleUserRound, Menu } from "lucide-react";
+import { Bell, Search, CircleUserRound, Menu, CheckCircle2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useSettings } from "@/hooks/useSettings";
+import { useSystemHealth } from "@/hooks/useSystemHealth";
+import HealthPopover from "@/components/common/HealthPopover";
+import Skeleton from "@/components/ui/Skeleton";
 
 const pageTitles = {
   "/": { title: "Dashboard", subtitle: "Manage your local cloud platform" },
@@ -15,12 +18,14 @@ const pageTitles = {
 const Navbar = ({ onMenuToggle }) => {
   const location = useLocation();
   const { settings } = useSettings();
+  const { healthSummary, loading, error, refresh } = useSystemHealth();
   const page = pageTitles[location.pathname] || { title: "Dashboard", subtitle: "" };
 
   return (
     <header
-      className="flex h-16 items-center justify-between border-b border-slate-800 bg-slate-950 px-4 md:px-6"
+      className="flex h-16 items-center justify-between border-b border-slate-800 bg-[var(--bg-header)] px-4 md:px-6"
       role="banner"
+      style={{ borderBottomColor: "var(--card-accent-border)" }}
     >
       {/* Left */}
       <div className="flex items-center gap-3 min-w-0">
@@ -60,13 +65,43 @@ const Navbar = ({ onMenuToggle }) => {
         </button>
 
         {/* System Status - hidden on mobile/tablet */}
-        <div
-          className="hidden items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 lg:flex"
-          role="status"
-          aria-label="System health status"
-        >
-          <span className="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.5)]" />
-          <span className="text-sm text-slate-300">Healthy</span>
+        <div className="hidden lg:block">
+          <HealthPopover
+            healthSummary={healthSummary}
+            loading={loading}
+            error={error}
+            onRefresh={refresh}
+            align="right"
+            trigger={
+              <div
+                className="flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 transition-colors hover:border-slate-600"
+                role="status"
+                aria-label="System health status"
+              >
+                {loading && !healthSummary ? (
+                  <>
+                    <Skeleton variant="circle" className="!h-2 !w-2" />
+                    <Skeleton variant="text-sm" className="!h-3 !w-14" />
+                  </>
+                ) : (
+                  <>
+                    <span
+                      className={`h-2 w-2 rounded-full ${
+                        healthSummary?.allHealthy
+                          ? "bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.5)]"
+                          : error
+                            ? "bg-slate-500"
+                            : "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.5)]"
+                      }`}
+                    />
+                    <span className="text-sm text-slate-300">
+                      {healthSummary?.label || (error ? "Unknown" : "Checking...")}
+                    </span>
+                  </>
+                )}
+              </div>
+            }
+          />
         </div>
 
         {/* User */}

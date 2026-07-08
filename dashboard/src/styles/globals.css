@@ -16,7 +16,12 @@
   --accent-active: #1d4ed8;
   --accent-focus: rgba(59, 130, 246, 0.4);
   --accent-dark: #1e3a5f;
+  --accent-rgb: 59, 130, 246;
   --accent-ring: rgba(59, 130, 246, 0.4);
+  --accent-border: rgba(59, 130, 246, 0.2);
+  --accent-border-hover: rgba(59, 130, 246, 0.35);
+  --accent-text: #3b82f6;
+  --accent-text-muted: rgba(59, 130, 246, 0.7);
   --btn-primary-bg: #3b82f6;
   --btn-primary-hover: #2563eb;
   --btn-primary-active: #1d4ed8;
@@ -24,6 +29,22 @@
   --toggle-active: #3b82f6;
   --focus-ring: rgba(59, 130, 246, 0.4);
   --selection-bg: rgba(59, 130, 246, 0.3);
+  --sidebar-active-bg: rgba(59, 130, 246, 0.15);
+  --sidebar-hover-bg: rgba(59, 130, 246, 0.08);
+  --sidebar-active-text: #93c5fd;
+  --card-accent-border: rgba(59, 130, 246, 0.12);
+  --card-accent-shadow: rgba(59, 130, 246, 0.06);
+  --chart-1: #3b82f6;
+  --chart-1-soft: rgba(59, 130, 246, 0.15);
+  --chart-2: #4ade80;
+  --chart-3: #c084fc;
+  --chart-4: #facc15;
+  --chart-5: #22d3ee;
+  --chart-6: #fb923c;
+  --chart-7: #f87171;
+  --badge-accent-bg: rgba(59, 130, 246, 0.1);
+  --badge-accent-text: #93c5fd;
+  --badge-accent-border: rgba(59, 130, 246, 0.2);
   --font-base: 14px;
   --font-heading: 1.25em;
   --font-small: 12px;
@@ -137,6 +158,51 @@ html {
     scroll-behavior: auto !important;
   }
 }
+
+/* ─── Smooth Theme Transitions ─────────────── */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.no-theme-transition,
+.no-theme-transition *,
+.animate-spin,
+.animate-pulse {
+  transition: none !important;
+}
+
+/* =============================================
+   GLOBAL ACCENT COLOR OVERRIDES (Default Dark)
+   ============================================= */
+.bg-blue-500 { background: var(--accent) !important; }
+.bg-blue-600 { background: var(--accent) !important; }
+.bg-blue-500\/10 { background: rgba(var(--accent-rgb), 0.1) !important; }
+.bg-blue-600\/5 { background: rgba(var(--accent-rgb), 0.05) !important; }
+.bg-blue-600\/10 { background: rgba(var(--accent-rgb), 0.1) !important; }
+.bg-blue-600\/15 { background: rgba(var(--accent-rgb), 0.15) !important; }
+.bg-blue-600\/20 { background: rgba(var(--accent-rgb), 0.2) !important; }
+.hover\:bg-blue-700:hover { background: var(--accent-hover) !important; }
+.hover\:bg-blue-600:hover { background: var(--accent-hover) !important; }
+.hover\:bg-blue-600\/20:hover { background: rgba(var(--accent-rgb), 0.2) !important; }
+.text-blue-400 { color: var(--accent-light) !important; }
+.text-blue-500 { color: var(--accent) !important; }
+.text-blue-600 { color: var(--accent) !important; }
+.border-blue-500\/20 { border-color: rgba(var(--accent-rgb), 0.2) !important; }
+.border-blue-600\/20 { border-color: rgba(var(--accent-rgb), 0.2) !important; }
+.border-blue-600\/40 { border-color: rgba(var(--accent-rgb), 0.4) !important; }
+.hover\:border-blue-500\/40:hover { border-color: rgba(var(--accent-rgb), 0.4) !important; }
+.focus\:border-blue-500:focus { border-color: var(--accent) !important; }
+.focus\:border-blue-600:focus { border-color: var(--accent) !important; }
+.focus\:ring-blue-500\/30:focus { --tw-ring-color: rgba(var(--accent-rgb), 0.3) !important; }
+.focus\:ring-blue-600\/30:focus { --tw-ring-color: rgba(var(--accent-rgb), 0.3) !important; }
+.focus-visible\:ring-blue-500\/40:focus-visible { --tw-ring-color: rgba(var(--accent-rgb), 0.4) !important; }
+.fill-blue-500 { fill: var(--chart-1) !important; }
 
 /* ─── Light Theme — CSS Variable Overrides ──── */
 [data-theme="light"] {

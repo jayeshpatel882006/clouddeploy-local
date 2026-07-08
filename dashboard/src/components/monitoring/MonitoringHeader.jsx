@@ -6,8 +6,8 @@ const MonitoringHeader = ({ timeRange, onTimeRangeChange }) => {
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
       <div className="flex items-start gap-3">
-        <div className="rounded-lg bg-emerald-600/10 p-2.5">
-          <Activity size={24} className="text-emerald-400" />
+        <div className="rounded-lg bg-[var(--accent-bg)] p-2.5">
+          <Activity size={24} className="text-[var(--accent-light)]" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-white">Monitoring</h1>
@@ -25,7 +25,7 @@ const MonitoringHeader = ({ timeRange, onTimeRangeChange }) => {
             onClick={() => onTimeRangeChange(r)}
             className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
               timeRange === r
-                ? "bg-emerald-600 text-white shadow-sm"
+                ? "bg-[var(--accent)] text-white shadow-sm"
                 : "text-slate-400 hover:text-slate-200"
             }`}
           >

@@ -17,6 +17,10 @@ const Card = ({
   return (
     <div
       className={`rounded-xl border border-slate-800 bg-slate-950 shadow-sm ${hoverVariants[hover] || ""} ${className}`}
+      style={{
+        borderColor: "var(--card-accent-border)",
+        boxShadow: "0 1px 2px 0 var(--card-accent-shadow)",
+      }}
     >
       {(title || subtitle || headerRight) && (
         <div className="flex items-center justify-between border-b border-slate-800 px-5 py-4">
