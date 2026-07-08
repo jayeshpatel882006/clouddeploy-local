@@ -35,3 +35,14 @@
 // });
 
 // export { listImages, getTags, deleteImage, syncImages };
+import { getRegistryService } from "../services/registry.service.js";
+
+export const getRegistry = async (req, res, next) => {
+  try {
+    const registry = await getRegistryService();
+
+    res.status(200).json(registry);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -7,6 +7,7 @@ import { Router } from "express";
 import deploymentRoutes from "./deployment.routes.js";
 import internalRoutes from "./internal.routes.js";
 import systemHealthRoutes from "./systemHealth.routes.js";
+import registryRoutes from "./registry.routes.js";
 
 // ==========================================
 // FUTURE PHASE
@@ -25,6 +26,7 @@ const router = Router();
 router.use("/deployments", deploymentRoutes);
 router.use("/internal", internalRoutes);
 router.use("/system/health", systemHealthRoutes);
+router.use("/registry", registryRoutes);
 
 // --- Future Routes ---
 // router.use("/dashboard", dashboardRoutes);

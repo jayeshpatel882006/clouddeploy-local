@@ -79,3 +79,14 @@
 //   deleteRegistryImage,
 //   syncRegistryFromDocker,
 // };
+
+import axios from "axios";
+
+const DEPLOYMENT_ENGINE_URL =
+  process.env.DEPLOYMENT_ENGINE_URL || "http://localhost:6000";
+
+export const getRegistryService = async () => {
+  const { data } = await axios.get(`${DEPLOYMENT_ENGINE_URL}/registry`);
+
+  return data;
+};
