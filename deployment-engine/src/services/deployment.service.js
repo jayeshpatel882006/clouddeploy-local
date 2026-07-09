@@ -235,6 +235,7 @@ import { createDeploymentMetadata } from "../deployment/deploymentMetadata.servi
 import { generateImageTag } from "../utils/imageTag.js";
 import { updateStatus } from "../backend/backend.service.js";
 import { getServiceInfo } from "../kubernetes/serviceInfo.service.js";
+import { saveDeploymentArtifacts } from "../../manifests/manifestStore.service.js";
 
 export const deploymentService = async (deployment) => {
   try {
@@ -338,6 +339,28 @@ export const deploymentService = async (deployment) => {
     // ==========================================================
     const serviceInfo = await getServiceInfo(imageName);
     const previewUrl = serviceInfo.previewUrl;
+
+    saveDeploymentArtifacts({
+      projectName: imageName,
+
+      dockerfilePath: dockerInfo.path,
+
+      deploymentManifestPath: deploymentManifest,
+
+      serviceManifestPath: serviceManifest.path,
+
+      metadata: {
+        projectName: imageName,
+        repositoryUrl: deployment.repositoryUrl,
+        branch: deployment.branch,
+        image: pushedImage.image,
+        imageTag,
+        previewUrl,
+        containerPort: 3000,
+        servicePort: 80,
+        deployedAt: new Date().toISOString(),
+      },
+    });
 
     // ==========================================================
     // STEP 13 : Cleanup Workspace
