@@ -1,0 +1,114 @@
+# ==========================================
+# CloudDeploy Local — Docker Compose
+# ==========================================
+#
+# Prerequisites:
+#   1. A MongoDB Atlas cluster (or any external MongoDB)
+#   2. Set MONGODB_URI in your .env or shell environment
+#   3. Docker Desktop with Kubernetes enabled
+#
+# Start all services:
+#   docker compose up -d
+#
+# Stop all services:
+#   docker compose down
+#
+# View logs:
+#   docker compose logs -f
+# ==========================================
+
+services:
+  # ─── Docker Registry (Local) ──────────────
+  registry:
+    image: registry:2
+    container_name: clouddeploy-registry
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - registry-data:/var/lib/registry
+      - ./registry/config.yml:/etc/docker/registry/config.yml:ro
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/v2/"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - clouddeploy
+
+  # ─── Backend API ──────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: clouddeploy-backend
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: production
+      PORT: 5001
+      DEPLOYMENT_ENGINE_URL: http://deployment-engine:6000
+      REGISTRY_URL: http://registry:5000
+      JWT_SECRET: ${JWT_SECRET:-change-this-to-a-secure-random-string}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      # MONGODB_URI must be set in ./backend/.env or passed via shell environment
+      # Example:
+      #   MONGODB_URI=mongodb+srv://user:password@cluster0.xxxxx.mongodb.net/clouddeploy?retryWrites=true&w=majority
+    depends_on:
+      deployment-engine:
+        condition: service_started
+      registry:
+        condition: service_healthy
+    networks:
+      - clouddeploy
+
+  # ─── Dashboard (React Frontend) ───────────
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    container_name: clouddeploy-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    environment:
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL:-http://localhost:5001/api}
+    depends_on:
+      - backend
+    networks:
+      - clouddeploy
+
+  # ─── Deployment Engine ────────────────────
+  deployment-engine:
+    build:
+      context: ./deployment-engine
+      dockerfile: Dockerfile
+    container_name: clouddeploy-deployment-engine
+    restart: unless-stopped
+    ports:
+      - "6000:6000"
+    environment:
+      NODE_ENV: production
+      PORT: 6000
+      BACKEND_URL: http://backend:5001/api
+      REGISTRY_URL: http://registry:5000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.kube/config:/home/appuser/.kube/config:ro
+    networks:
+      - clouddeploy
+
+# ─── Named Volumes ──────────────────────────
+volumes:
+  registry-data:
+    driver: local
+
+# ─── Networks ───────────────────────────────
+networks:
+  clouddeploy:
+    driver: bridge
