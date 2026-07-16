@@ -29,8 +29,10 @@ RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 appuser
 
 # Need Docker CLI for docker build/push operations
-RUN apk add --no-cache docker-cli docker-cli-compose
-
+RUN apk add --no-cache \
+    git \
+    docker-cli \
+    docker-cli-compose
 # Need kubectl for Kubernetes operations
 RUN apk add --no-cache curl && \
     curl -LO "https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl" && \
@@ -43,7 +45,7 @@ COPY --from=build /app ./
 RUN mkdir -p /app/workspace /app/manifests && \
     chown -R appuser:nodejs /app/workspace /app/manifests
 
-USER appuser
+# USER appuser
 
 EXPOSE 6000
 
