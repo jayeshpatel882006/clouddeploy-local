@@ -1129,7 +1129,7 @@ If you find CloudDeploy useful, here's how you can support it:
 
 <div align="center">
 
-**Built with ❤️ for the DevOps and Open Source Community**
+**For the DevOps and Open Source Community**
 
 ⭐ **If you find this project useful, give it a star!** ⭐
 
