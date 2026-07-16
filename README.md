@@ -827,32 +827,6 @@ curl http://localhost:5000/v2/_catalog
 
 ---
 
-## 📸 Screenshots
-
-> *Screenshots coming soon! If you have screenshots of CloudDeploy Local in action, please submit a Pull Request.*
-
-<!-- 
-  Dashboard preview
-  Deployment management
-  Cluster browser
-  Monitoring dashboards
-  Log viewer
-  Registry browser
-  Settings panel
--->
-
-| Section | Screenshot |
-|---------|------------|
-| Dashboard | _[Add screenshot]_ |
-| Deployments | _[Add screenshot]_ |
-| Clusters | _[Add screenshot]_ |
-| Monitoring | _[Add screenshot]_ |
-| Logs | _[Add screenshot]_ |
-| Registry | _[Add screenshot]_ |
-| Settings | _[Add screenshot]_ |
-
----
-
 ## ❓ FAQ
 
 <details>
