@@ -1103,13 +1103,11 @@ The long-term goal is to build a **modern, educational, open-source local PaaS**
 
 | Field | Value |
 |-------|-------|
-| **Name:** | _[Your Name]_ |
-| **Email:** | _[your.email@example.com]_ |
+| **Name:** | _Jayesh Patel_ |
+| **Email:** | _jayeshpatelswami1@gmail.com_ |
 | **GitHub:** | _[https://github.com/jayeshpatel882006](https://github.com/jayeshpatel882006)_ |
-| **LinkedIn:** | _[https://linkedin.com/in/YOUR_PROFILE](https://linkedin.com/in/YOUR_PROFILE)_ |
-| **Portfolio:** | _[https://your-portfolio.com](https://your-portfolio.com)_ |
-| **Instagram:** | _[https://instagram.com/YOUR_HANDLE](https://instagram.com/YOUR_HANDLE)_ |
-| **Website:** | _[https://your-website.com](https://your-website.com)_ |
+| **LinkedIn:** | _[https://www.linkedin.com/in/jayesh-patel-487211245/](https://www.linkedin.com/in/jayesh-patel-487211245/)_ |
+| **Portfolio:** | _[https://jayeshpatel882006.github.io/Portfolio-2026/](https://jayeshpatel882006.github.io/Portfolio-2026/)_ |
 
 ---
 
