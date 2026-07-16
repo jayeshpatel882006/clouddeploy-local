@@ -1,9 +1,4 @@
-import * as k8s from "@kubernetes/client-node";
-
-const kc = new k8s.KubeConfig();
-kc.loadFromDefault();
-
-const coreApi = kc.makeApiClient(k8s.CoreV1Api);
+import { coreApi } from "./kubernetes.client.js";
 
 export const getServiceInfo = async (serviceName, namespace = "default") => {
   const service = await coreApi.readNamespacedService({

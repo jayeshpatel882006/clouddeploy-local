@@ -7,6 +7,9 @@ import deploymentRoutes from "./routes/deployment.routes.js";
 import registryRoutes from "./routes/registry.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import deploymentDetailsRoutes from "./routes/deploymentDetails.routes.js";
+import deploymentOverviewRoutes from "./routes/deploymentOverview.routes.js";
+import manifestRoutes from "./routes/manifest.routes.js";
+import kubernetesRoutes from "./routes/kubernetes.routes.js";
 
 const app = express();
 
@@ -28,5 +31,8 @@ app.use("/delete", deleteRoutes);
 app.use("/registry", registryRoutes);
 app.use("/system/health", healthRoutes);
 app.use("/deployment-details", deploymentDetailsRoutes);
+app.use("/deployment-overview", deploymentOverviewRoutes);
+app.use("/manifests", manifestRoutes);
+app.use("/kubernetes", kubernetesRoutes);
 
 export default app;

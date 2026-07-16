@@ -8,6 +8,7 @@ export const updateStatus = async (deploymentId, status) => {
     `${BACKEND_URL}/internal/deployment/${deploymentId}/status`,
     {
       status,
+      message: `Deployment entered ${status} stage.`,
     },
   );
 };
