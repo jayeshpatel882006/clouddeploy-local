@@ -8,6 +8,7 @@ import deploymentRoutes from "./deployment.routes.js";
 import internalRoutes from "./internal.routes.js";
 import systemHealthRoutes from "./systemHealth.routes.js";
 import registryRoutes from "./registry.routes.js";
+import deploymentDetailsRoutes from "./deploymentDetails.routes.js";
 
 // ==========================================
 // FUTURE PHASE
@@ -27,6 +28,7 @@ router.use("/deployments", deploymentRoutes);
 router.use("/internal", internalRoutes);
 router.use("/system/health", systemHealthRoutes);
 router.use("/registry", registryRoutes);
+router.use("/deployment-details", deploymentDetailsRoutes);
 
 // --- Future Routes ---
 // router.use("/dashboard", dashboardRoutes);
