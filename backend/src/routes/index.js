@@ -13,6 +13,7 @@ import deploymentOverviewRoutes from "./deploymentOverview.routes.js";
 import manifestRoutes from "./manifest.routes.js";
 import kubernetesRoutes from "./kubernetes.routes.js";
 import timelineRoutes from "./timeline.routes.js";
+import logsRoutes from "./logs.routes.js";
 
 // ==========================================
 // FUTURE PHASE
@@ -37,6 +38,7 @@ router.use("/deployment-overview", deploymentOverviewRoutes);
 router.use("/manifests", manifestRoutes);
 router.use("/kubernetes", kubernetesRoutes);
 router.use("/timeline", timelineRoutes);
+router.use("/logs", logsRoutes);
 
 // --- Future Routes ---
 // router.use("/dashboard", dashboardRoutes);

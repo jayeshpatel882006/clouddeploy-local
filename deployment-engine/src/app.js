@@ -10,6 +10,7 @@ import deploymentDetailsRoutes from "./routes/deploymentDetails.routes.js";
 import deploymentOverviewRoutes from "./routes/deploymentOverview.routes.js";
 import manifestRoutes from "./routes/manifest.routes.js";
 import kubernetesRoutes from "./routes/kubernetes.routes.js";
+import logsRoutes from "./routes/logs.routes.js";
 
 const app = express();
 
@@ -34,5 +35,6 @@ app.use("/deployment-details", deploymentDetailsRoutes);
 app.use("/deployment-overview", deploymentOverviewRoutes);
 app.use("/manifests", manifestRoutes);
 app.use("/kubernetes", kubernetesRoutes);
+app.use("/logs", logsRoutes);
 
 export default app;
