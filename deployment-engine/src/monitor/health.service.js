@@ -66,21 +66,50 @@ export const checkKubernetes = async () => {
 };
 
 // Registry
+// export const checkRegistry = async () => {
+//   try {
+//     await axios.get(`${REGISTRY_URL}/v2/`);
+
+//     return {
+//       status: "HEALTHY",
+//       running: true,
+//       message: "Container Registry is running.",
+//     };
+//   } catch {
+//     return {
+//       status: "UNHEALTHY",
+//       running: false,
+//       message: "Container Registry is unavailable.",
+//       action: "Start Docker Registry.",
+//     };
+//   }
+// };
 export const checkRegistry = async () => {
   try {
-    await axios.get(`${REGISTRY_URL}/v2/`);
+    console.log("Registry URL:", REGISTRY_URL);
+
+    const response = await axios.get(`${REGISTRY_URL}/v2/`);
+
+    console.log("Registry Status:", response.status);
 
     return {
       status: "HEALTHY",
       running: true,
       message: "Container Registry is running.",
     };
-  } catch {
+  } catch (error) {
+    console.log("Registry Health Error:");
+    console.log(error.message);
+
+    if (error.response) {
+      console.log("Response Status:", error.response.status);
+      console.log("Response Data:", error.response.data);
+    }
+
     return {
       status: "UNHEALTHY",
       running: false,
       message: "Container Registry is unavailable.",
-      action: "Start Docker Registry.",
     };
   }
 };

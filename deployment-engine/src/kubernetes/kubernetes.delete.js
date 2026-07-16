@@ -7,6 +7,9 @@ const appsApi = kc.makeApiClient(k8s.AppsV1Api);
 const coreApi = kc.makeApiClient(k8s.CoreV1Api);
 
 export const deleteDeployment = async (appName, namespace = "default") => {
+  console.log("Deleting Deployment");
+  console.log("appName:", appName);
+  console.log("namespace:", namespace);
   await appsApi.deleteNamespacedDeployment({
     name: appName,
     namespace,
