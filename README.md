@@ -472,7 +472,7 @@ Make sure you have the following installed on your system:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/clouddeploy-local.git
+git clone https://github.com/jayeshpatel882006/clouddeploy-local.git
 cd clouddeploy-local
 
 # 2. Start all services
@@ -489,7 +489,7 @@ open http://localhost
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/clouddeploy-local.git
+git clone https://github.com/jayeshpatel882006/clouddeploy-local.git
 cd clouddeploy-local
 
 # 2. Install dependencies for all services
@@ -637,7 +637,7 @@ The Deployment Engine interacts with Kubernetes using `@kubernetes/client-node`:
 ### Quick Start (Docker Compose)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/clouddeploy-local.git
+git clone https://github.com/jayeshpatel882006/clouddeploy-local.git
 cd clouddeploy-local
 docker compose up -d
 ```
@@ -824,32 +824,6 @@ kubectl get pods --all-namespaces
 # Test registry
 curl http://localhost:5000/v2/_catalog
 ```
-
----
-
-## 📸 Screenshots
-
-> *Screenshots coming soon! If you have screenshots of CloudDeploy Local in action, please submit a Pull Request.*
-
-<!-- 
-  Dashboard preview
-  Deployment management
-  Cluster browser
-  Monitoring dashboards
-  Log viewer
-  Registry browser
-  Settings panel
--->
-
-| Section | Screenshot |
-|---------|------------|
-| Dashboard | _[Add screenshot]_ |
-| Deployments | _[Add screenshot]_ |
-| Clusters | _[Add screenshot]_ |
-| Monitoring | _[Add screenshot]_ |
-| Logs | _[Add screenshot]_ |
-| Registry | _[Add screenshot]_ |
-| Settings | _[Add screenshot]_ |
 
 ---
 
@@ -1044,7 +1018,7 @@ We ❤️ community-driven ideas! If you have suggestions for improving CloudDep
 
 ### How to Submit a Feature Request
 
-Open a [GitHub Issue](https://github.com/YOUR_USERNAME/clouddeploy-local/issues/new) with the following:
+Open a [GitHub Issue](https://github.com/jayeshpatel882006/clouddeploy-local/issues/new) with the following:
 
 1. **A clear title** describing the feature
 2. **A detailed description** of what it should do
@@ -1103,13 +1077,11 @@ The long-term goal is to build a **modern, educational, open-source local PaaS**
 
 | Field | Value |
 |-------|-------|
-| **Name:** | _[Your Name]_ |
-| **Email:** | _[your.email@example.com]_ |
-| **GitHub:** | _[https://github.com/YOUR_USERNAME](https://github.com/YOUR_USERNAME)_ |
-| **LinkedIn:** | _[https://linkedin.com/in/YOUR_PROFILE](https://linkedin.com/in/YOUR_PROFILE)_ |
-| **Portfolio:** | _[https://your-portfolio.com](https://your-portfolio.com)_ |
-| **Instagram:** | _[https://instagram.com/YOUR_HANDLE](https://instagram.com/YOUR_HANDLE)_ |
-| **Website:** | _[https://your-website.com](https://your-website.com)_ |
+| **Name:** | _Jayesh Patel_ |
+| **Email:** | _jayeshpatelswami1@gmail.com_ |
+| **GitHub:** | _[https://github.com/jayeshpatel882006](https://github.com/jayeshpatel882006)_ |
+| **LinkedIn:** | _[https://www.linkedin.com/in/jayesh-patel-487211245/](https://www.linkedin.com/in/jayesh-patel-487211245/)_ |
+| **Portfolio:** | _[https://jayeshpatel882006.github.io/Portfolio-2026/](https://jayeshpatel882006.github.io/Portfolio-2026/)_ |
 
 ---
 
@@ -1121,7 +1093,7 @@ If you find CloudDeploy useful, here's how you can support it:
 |--------|-----|
 | ⭐ **Star the repository** | Show your support on GitHub |
 | 🍴 **Fork the project** | Create your own version and experiments |
-| 🐛 **Report bugs** | [Open an Issue](https://github.com/YOUR_USERNAME/clouddeploy-local/issues/new) |
+| 🐛 **Report bugs** | [Open an Issue](https://github.com/jayeshpatel882006/clouddeploy-local/issues/new) |
 | 💡 **Suggest features** | Share your ideas for improvement |
 | 🤝 **Contribute code** | Submit a Pull Request with your changes |
 | 📢 **Share with others** | Spread the word in your network |
@@ -1131,7 +1103,7 @@ If you find CloudDeploy useful, here's how you can support it:
 
 <div align="center">
 
-**Built with ❤️ for the DevOps and Open Source Community**
+**For the DevOps and Open Source Community**
 
 ⭐ **If you find this project useful, give it a star!** ⭐
 
