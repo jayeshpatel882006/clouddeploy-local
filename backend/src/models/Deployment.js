@@ -61,6 +61,22 @@ const deploymentSchema = new mongoose.Schema(
       ],
       default: "REGISTERED",
     },
+    timeline: [
+      {
+        status: {
+          type: String,
+          required: true,
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+        message: {
+          type: String,
+          default: "",
+        },
+      },
+    ],
   },
   {
     timestamps: true,

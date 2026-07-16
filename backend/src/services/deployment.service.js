@@ -222,7 +222,14 @@ export const deleteDeploymentService = async (id) => {
     throw new Error("Deployment not found");
   }
 
-  await deleteDeploymentEngine(deployment);
+  // Only delete Kubernetes resources if they were actually deployed
+  if (["DEPLOYING", "RUNNING"].includes(deployment.status)) {
+    try {
+      await deleteDeploymentEngine(deployment);
+    } catch (error) {
+      console.warn("Deployment Engine cleanup failed:", error.message);
+    }
+  }
 
   await DeploymentHistory.create({
     ...deployment.toObject(),
