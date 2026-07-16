@@ -6,6 +6,7 @@ import deleteRoutes from "./routes/delete.routes.js";
 import deploymentRoutes from "./routes/deployment.routes.js";
 import registryRoutes from "./routes/registry.routes.js";
 import healthRoutes from "./routes/health.routes.js";
+import deploymentDetailsRoutes from "./routes/deploymentDetails.routes.js";
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use("/deploy", deploymentRoutes);
 app.use("/delete", deleteRoutes);
 app.use("/registry", registryRoutes);
 app.use("/system/health", healthRoutes);
+app.use("/deployment-details", deploymentDetailsRoutes);
 
 export default app;
