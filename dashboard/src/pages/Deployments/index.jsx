@@ -61,6 +61,11 @@ const Deployments = () => {
     setDeleteTarget(null);
   }, []);
 
+  // ── Close details drawer (stable callback) ──────────────────
+  const handleDrawerClose = useCallback(() => {
+    setViewDrawer(null);
+  }, []);
+
   // ── Loading ──────────────────────────────────────────────────
   if (loading) return <LoadingState />;
 
@@ -128,7 +133,7 @@ const Deployments = () => {
       {/* Details Drawer */}
       <DeploymentDetailsDrawer
         deployment={viewDrawer}
-        onClose={() => setViewDrawer(null)}
+        onClose={handleDrawerClose}
       />
     </div>
   );
